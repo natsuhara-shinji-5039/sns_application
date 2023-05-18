@@ -1,13 +1,10 @@
 package com.example.demo.entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -15,11 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "accounts")
 public class Account {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
-	
-//	@Column(name = "user_id")
-//	private String userId;
 	
 	private String name;
 	
@@ -44,8 +37,8 @@ public class Account {
 		
 	}
 	
-	public Account(String userId, String name, String email, String introduction, String password, LocalDate birthday, String imagePath) {
-		this.id = userId;
+	public Account(String id, String name, String email, String introduction, String password, LocalDate birthday, String imagePath) {
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.introduction = introduction;
@@ -85,11 +78,11 @@ public class Account {
 		return imagePath;
 	}
 	
-	public Timestamp getcreatedAt() {
+	public LocalDateTime getcreatedAt() {
 		return createdAt;
 	}
 	
-	public Timestamp getupdatedAt() {
+	public LocalDateTime getupdatedAt() {
 		return updatedAt;
 	}
 }

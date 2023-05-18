@@ -27,19 +27,16 @@ public class AccountController {
 	// 新規登録処理
 	@PostMapping("/account/sign_up")
 	public String store(
+			@RequestParam(name="id", defaultValue="") String id,
 			@RequestParam(name="name", defaultValue="") String name,
 			@RequestParam(name="email") String email,
 			@RequestParam(name="introduction", defaultValue="") String introduction,
 			@RequestParam(name="password", defaultValue="") String password,
 			@RequestParam(name="birthday", defaultValue="") String birthday,
 			Model model) throws ParseException {
-//		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
-//		Date birthdayDate = sdFormat.parse(birthday);
-		String userId = "test";
 		String imagePath = "";
 		LocalDate birthdayDate = LocalDate.parse(birthday);
-		System.out.println(userId);
-		Account account = new Account(userId, name, email, introduction, password, birthdayDate, imagePath);
+		Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
 		accountRepository.save(account);
 		return "/account/signUp";
 	}
