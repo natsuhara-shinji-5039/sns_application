@@ -8,35 +8,34 @@ DROP TABLE IF EXISTS favorites;
 -- アカウントテーブル
 CREATE TABLE accounts
 (
-   id SERIAL PRIMARY KEY,
-   user_id VARCHAR,
+   id VARCHAR PRIMARY KEY,
    name VARCHAR,
    email VARCHAR,
    introduction TEXT,
    password VARCHAR,
    birthday DATE,
    image_path TEXT,
-   created_at TIMESTAMP,
-   updated_at TIMESTAMP,
-   UNIQUE (user_id, email)
+   created_at DATE NOT NULL,
+   updated_at DATE NOT NULL,
+   UNIQUE (id, email)
 );
 
 CREATE TABLE posts
 (
    id SERIAL PRIMARY KEY,
-   user_id INTEGER,
+   user_id VARCHAR,
    category_id INTEGER,
    body TEXT,
-   created_at TIMESTAMP,
-   updated_at TIMESTAMP
+   created_at DATE NOT NULL,
+   updated_at DATE NOT NULL
 );
 
 CREATE TABLE categories
 (
    id SERIAL PRIMARY KEY,
    name VARCHAR,
-   created_at TIMESTAMP,
-   updated_at TIMESTAMP,
+   created_at DATE NOT NULL,
+   updated_at DATE NOT NULL,
    UNIQUE (name)
 );
 
@@ -45,15 +44,15 @@ CREATE TABLE comments
    id SERIAL PRIMARY KEY,
    post_id INTEGER,
    body TEXT,
-   created_at TIMESTAMP,
-   updated_at TIMESTAMP
+   created_at DATE NOT NULL,
+   updated_at DATE NOT NULL
 );
 
 CREATE TABLE favorites
 (
    id SERIAL PRIMARY KEY,
-   user_id INTEGER,
+   user_id VARCHAR,
    post_id INTEGER,
-   created_at TIMESTAMP,
-   updated_at TIMESTAMP
+   created_at DATE NOT NULL,
+   updated_at DATE NOT NULL
 );
