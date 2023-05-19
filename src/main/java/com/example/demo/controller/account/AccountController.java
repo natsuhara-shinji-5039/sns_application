@@ -38,10 +38,11 @@ public class AccountController {
 			Model model) throws ParseException {
 		// エラーチェック
 		List<String> errors = new ArrayList<>();
+		List<Account> accountList = accountRepository.findById(id);
 		if(id.equals("")) {
 			errors.add("IDを入力してください");
 			System.out.println("test1");
-		} else if(accountRepository.findById(id) != null) {
+		} else if(accountList.size() != 0) {
 			System.out.println("test2");
 			errors.add("入力されたIDはすでに使用されております");
 		}
