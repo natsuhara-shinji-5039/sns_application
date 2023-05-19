@@ -15,8 +15,8 @@ CREATE TABLE accounts
    password VARCHAR,
    birthday DATE,
    image_path TEXT,
-   created_at DATE NOT NULL,
-   updated_at DATE NOT NULL,
+   created_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP NOT NULL,
    UNIQUE (id, email)
 );
 
@@ -26,16 +26,16 @@ CREATE TABLE posts
    user_id VARCHAR,
    category_id INTEGER,
    body TEXT,
-   created_at DATE NOT NULL,
-   updated_at DATE NOT NULL
+   created_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE categories
 (
    id SERIAL PRIMARY KEY,
    name VARCHAR,
-   created_at DATE NOT NULL,
-   updated_at DATE NOT NULL,
+   created_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP NOT NULL,
    UNIQUE (name)
 );
 
@@ -44,8 +44,8 @@ CREATE TABLE comments
    id SERIAL PRIMARY KEY,
    post_id INTEGER,
    body TEXT,
-   created_at DATE NOT NULL,
-   updated_at DATE NOT NULL
+   created_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE favorites
@@ -53,6 +53,6 @@ CREATE TABLE favorites
    id SERIAL PRIMARY KEY,
    user_id VARCHAR,
    post_id INTEGER,
-   created_at DATE NOT NULL,
-   updated_at DATE NOT NULL
+   created_at TIMESTAMP NOT NULL,
+   updated_at TIMESTAMP NOT NULL
 );
