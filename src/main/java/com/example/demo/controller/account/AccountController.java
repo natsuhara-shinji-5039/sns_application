@@ -74,4 +74,45 @@ public class AccountController {
 		}
 	}
 	
+	// ログイン画面
+	@GetMapping("/account/sign_in")
+	public String index() {
+		return "account/login";
+	}
+	
+	@PostMapping("/account/sign_in")
+	public String login(
+			@RequestParam(name="id", defaultValue="") String id,
+			@RequestParam(name="password", defaultValue="") String password,
+			Model model) {
+		
+		List<Account> account = accountRepository.findById(id);
+		// エラーチェック
+		List<String> errors = new ArrayList<>();
+		if(id.equals("")) {
+			errors.add("ユーザーIDを入力してください");
+		} else if(account.size() == 0) {
+			errors.add("アカウントが存在しません");
+		}
+		
+		if(password.equals("")) {
+			errors.add("パスワードを入力してください");
+		}
+		
+		if(errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "account/login";
+		} else {
+			return "account/login";
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
