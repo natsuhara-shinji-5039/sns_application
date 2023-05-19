@@ -2,6 +2,8 @@ package com.example.demo.controller.account;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,11 +36,42 @@ public class AccountController {
 			@RequestParam(name="password", defaultValue="") String password,
 			@RequestParam(name="birthday", defaultValue="") String birthday,
 			Model model) throws ParseException {
-		String imagePath = "";
-		LocalDate birthdayDate = LocalDate.parse(birthday);
-		Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
-		accountRepository.save(account);
-		return "/account/signUp";
+		// エラーチェック
+		List<String> errors = new ArrayList<>();
+		if(id.equals("")) {
+			errors.add("IDを入力してください");
+			System.out.println("test1");
+		} else if(accountRepository.findById(id) != null) {
+			System.out.println("test2");
+			errors.add("入力されたIDはすでに使用されております");
+		}
+		
+		if(name.equals("")) {
+			errors.add("名前を入力してください");
+		}
+		
+		if(email.equals("")) {
+			errors.add("メールアドレスを入力してください");
+		}
+		
+		if(password.equals("")) {
+			errors.add("パスワードを入力してください");
+		}
+		
+		if(birthday.equals("")) {
+			errors.add("誕生日を選択してください");
+		}
+		
+		if(errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "/account/signUp";
+		} else {
+			String imagePath = "";
+			LocalDate birthdayDate = LocalDate.parse(birthday);
+			Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
+			accountRepository.save(account);
+			return "/account/signUp";
+		}
 	}
 	
 }

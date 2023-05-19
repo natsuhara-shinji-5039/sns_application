@@ -5,6 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<ul th:each="error: ${errors}">
+		<li th:text="${error}"></li>
+	</ul>
 	<h1>新規登録</h1>
 	<form action="/account/sign_up" method="post">
 		<table>
