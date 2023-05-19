@@ -21,6 +21,7 @@ CREATE TABLE accounts
    UNIQUE (id, email)
 );
 
+-- 投稿テーブル
 CREATE TABLE posts
 (
    id SERIAL PRIMARY KEY,
@@ -31,6 +32,22 @@ CREATE TABLE posts
    updated_at TIMESTAMP NOT NULL
 );
 
+-- 投稿テーブルとアカウントテーブルの結合
+CREATE VIEW v_posts AS
+(
+   SELECT
+      p.id,
+      a.name,
+      p.user_id,
+      p.category_id,
+      p.body,
+      p.created_at,
+      p.updated_at
+   FROM posts p
+   JOIN accounts a ON p.user_id = a.id
+);
+
+-- カテゴリーテーブル
 CREATE TABLE categories
 (
    id SERIAL PRIMARY KEY,
@@ -40,6 +57,7 @@ CREATE TABLE categories
    UNIQUE (name)
 );
 
+-- コメントテーブル
 CREATE TABLE comments
 (
    id SERIAL PRIMARY KEY,
@@ -49,6 +67,7 @@ CREATE TABLE comments
    updated_at TIMESTAMP NOT NULL
 );
 
+-- お気に入りテーブル
 CREATE TABLE favorites
 (
    id SERIAL PRIMARY KEY,
