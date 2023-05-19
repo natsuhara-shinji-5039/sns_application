@@ -1,4 +1,5 @@
 -- 各種テーブル削除
+DROP VIEW IF EXISTS v_posts;
 DROP TABLE IF EXISTS accounts;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS categories;
