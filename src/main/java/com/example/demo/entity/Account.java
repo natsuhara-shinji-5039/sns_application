@@ -85,4 +85,9 @@ public class Account {
 	public LocalDateTime getupdatedAt() {
 		return updatedAt;
 	}
+	
+	// セッター
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }
