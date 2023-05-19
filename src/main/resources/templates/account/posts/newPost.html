@@ -6,6 +6,10 @@
 </head>
 <body>
 	<h1>新規投稿</h1>
-	<span>[[${@sessionAccount.id}]]さん</span>
+	<span>@[[${@sessionAccount.id}]]</span>
+	<form action="/posts" method="post">
+		<textarea name="body" placeholder="投稿内容を入力してください"></textarea>
+		<button>投稿</button>
+	</form>
 </body>
 </html>
