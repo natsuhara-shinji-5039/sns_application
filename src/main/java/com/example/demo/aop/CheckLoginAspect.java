@@ -15,8 +15,11 @@ public class CheckLoginAspect {
 	SessionAccount sessionAccount;
 	
 	// 
-	@Around("execution(* com.example.demo.controller.account.PostController.*(..))")
+	@Around("execution(* com.example.demo.controller.account.PostController.store*(..)) ||"
+			+ "execution(* com.example.demo.controller.account.PostController.create*(..))"
+			)
 	public Object checkLogin(ProceedingJoinPoint jp) throws Throwable {
+		
 		if(sessionAccount == null || sessionAccount.getName() == null || sessionAccount.getName().length() == 0) {
 			System.err.println("ログインしていません");
 			return "redirect:/account/sign_in";
