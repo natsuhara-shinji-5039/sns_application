@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>投稿詳細ページ</title>
+</head>
+<body>
+	<h1>投稿詳細ページ</h1>
+	<p th:text="${post.name}"></p>
+	<p th:text="${post.body}"></p>
+	<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+</body>
+</html>

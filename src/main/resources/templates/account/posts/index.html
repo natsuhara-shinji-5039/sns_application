@@ -6,9 +6,11 @@
 </head>
 <body>
 	<h1>一覧ページ</h1>
+	<a href="/posts/new">新規作成</a>
 	<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
 		<span th:text="${post.name}"></span>
 		<p th:text="${post.body}"></p>
+		<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
 	</div>
 </body>
 </html>

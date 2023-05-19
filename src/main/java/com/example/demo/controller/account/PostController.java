@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,11 +33,13 @@ public class PostController {
 	@Autowired
 	VPostRepository vPostRepository;
 	
+	// 新規登録ページ
 	@GetMapping("/posts/new")
 	public String create() {
 		return "account/posts/newPost";
 	}
 	
+	// 新規登録処理
 	@PostMapping("/posts")
 	public String store(
 			@RequestParam(name="body", defaultValue="") String body,
@@ -46,10 +49,21 @@ public class PostController {
 		return "redirect:/posts/new";
 	}
 	
+	// 一覧ページ
 	@GetMapping("/posts")
 	public String index(Model model) {
 		List<VPost> posts = vPostRepository.findAll();
 		model.addAttribute("posts", posts);
-		return "account/posts/posts";
+		return "account/posts/index";
+	}
+	
+	// 詳細ページ
+	@GetMapping("/posts/{id}")
+	public String show(
+			@PathVariable("id") Integer id,
+			Model model) {
+		VPost post = vPostRepository.findById(id).get();
+		model.addAttribute("post", post);
+		return "account/posts/show";
 	}
 }

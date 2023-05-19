@@ -82,7 +82,7 @@ public class AccountController {
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
-			return "/account/signUp";
+			return "redirect:/posts";
 		}
 	}
 	
@@ -92,6 +92,7 @@ public class AccountController {
 		return "account/login";
 	}
 	
+	// ログイン処理
 	@PostMapping("/account/sign_in")
 	public String login(
 			@RequestParam(name="id", defaultValue="") String id,
