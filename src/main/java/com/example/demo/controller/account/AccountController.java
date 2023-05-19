@@ -13,10 +13,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Account;
+import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AccountController {
+	@Autowired
+	HttpSession session;
+	
+	@Autowired
+	SessionAccount sessionAccount;
+	
 	@Autowired
 	AccountRepository accountRepository;
 	
@@ -70,6 +79,8 @@ public class AccountController {
 			LocalDate birthdayDate = LocalDate.parse(birthday);
 			Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
 			accountRepository.save(account);
+			sessionAccount.setName(account.getName());
+			sessionAccount.setId(account.getId());
 			return "/account/signUp";
 		}
 	}
@@ -103,11 +114,18 @@ public class AccountController {
 			model.addAttribute("errors", errors);
 			return "account/login";
 		} else {
+			sessionAccount.setName(account.get(0).getName());
+			sessionAccount.setId(account.get(0).getId());
 			return "account/login";
 		}
 	}
 	
-	
+	// ログアウト
+	@GetMapping("/lgout")
+	public String logout() {
+		session.invalidate();
+		return "account/login";
+	}
 	
 	
 	
