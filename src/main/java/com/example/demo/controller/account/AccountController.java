@@ -92,6 +92,7 @@ public class AccountController {
 		return "account/login";
 	}
 	
+	// ログイン処理
 	@PostMapping("/account/sign_in")
 	public String login(
 			@RequestParam(name="id", defaultValue="") String id,
@@ -122,7 +123,7 @@ public class AccountController {
 	}
 	
 	// ログアウト
-	@GetMapping("/lgout")
+	@GetMapping("/logout")
 	public String logout() {
 		session.invalidate();
 		return "account/login";
