@@ -1,6 +1,7 @@
 package com.example.demo.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,18 @@ public class CheckLoginAspect {
 	SessionAccount sessionAccount;
 	
 	// 
-	@Around("execution(* com.example.demo.controller.account.PostController.store*(..)) ||"
-			+ "execution(* com.example.demo.controller.account.PostController.create*(..))"
-			)
+	@Around("execution(* com.example.demo.controller.account.*Controller.*(..))")
 	public Object checkLogin(ProceedingJoinPoint jp) throws Throwable {
+		Signature sig = jp.getSignature();
+		System.err.println(sig.getDeclaringType().getSimpleName() + "#" + sig.getName());
+		//未処理の例外
+		if(sig.getDeclaringType().getSimpleName().equals("AccountController") 
+				&& (sig.getName().equals("index") 
+						|| sig.getName().equals("signUp")
+						|| sig.getName().equals("login")
+						|| sig.getName().equals("store"))) {
+			return jp.proceed();
+		} 
 		
 		if(sessionAccount == null || sessionAccount.getName() == null || sessionAccount.getName().length() == 0) {
 			System.err.println("ログインしていません");
