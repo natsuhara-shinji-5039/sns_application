@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
+<head>
+<meta charset="UTF-8">
+<title>ユーザーページ</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<h1>test</h1>
+				</div>
+				<div class="col-md-8 offset-md-1">
+					<table>
+						<tr>
+							<img th:src="@{/images/no_image.png}" width="100px" height="100px">
+						</tr>
+						<tr>
+							<th>名前</th>
+							<th th:text="${account.name}"></th>
+						</tr>
+						<tr>
+							<th th:text="${account.email}"></th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
