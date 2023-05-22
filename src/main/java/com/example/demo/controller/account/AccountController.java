@@ -82,11 +82,7 @@ public class AccountController {
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
-<<<<<<< HEAD
-			return "redirect:/posts";
-=======
 			return "redirect:/my_page";
->>>>>>> develop
 		}
 	}
 	
@@ -127,7 +123,7 @@ public class AccountController {
 	}
 	
 	// ログアウト
-	@GetMapping("/lgout")
+	@GetMapping("/logout")
 	public String logout() {
 		session.invalidate();
 		return "account/login";
