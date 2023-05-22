@@ -136,12 +136,44 @@ public class AccountController {
 		model.addAttribute("account", account.get(0));
 		return "account/myPage/myPage";
 	}
+	
+	// アカウント編集ページ
+	@GetMapping("/my_page/edit")
+	public String edit(Model model) {
+		List<Account> account = accountRepository.findById(sessionAccount.getId());
+		model.addAttribute("account", account.get(0));
+		return "account/myPage/edit";
+	}
+	
+	@PostMapping("/my_page/edit")
+	public String upload(
+			@RequestParam(name="id", defaultValue="") String id,
+			@RequestParam(name="name", defaultValue="") String name,
+			@RequestParam(name="email") String email,
+			@RequestParam(name="introduction", defaultValue="") String introduction,
+			@RequestParam(name="password", defaultValue="") String password,
+			@RequestParam(name="birthday", defaultValue="") String birthday,
+			Model model) {
+		Account account = accountRepository.findById(id).get(0);
+		String imagePath = "";
+		LocalDate birthdayDate = LocalDate.parse(birthday);
+		account.setId(id);
+		account.setName(name);
+		account.setEmail(email);
+		account.setPassword(password);
+		account.setIntroduction(introduction);
+		account.setBirthday(birthdayDate);
+		account.setUpdatedAt();
+		accountRepository.save(account);
+		sessionAccount.setName(account.getName());
+		sessionAccount.setId(account.getId());
+		return "redirect:/my_page";
+	}
 
 	@GetMapping("/")
 	public String test() {
 		return "layouts/template";
 	}
-	
 	
 	
 	
