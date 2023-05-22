@@ -1,29 +1,39 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" th:remove="tag">
 <title>Login</title>
-<span th:text="${@sessionAccount.name}"></span>
-<span th:text="${@sessionAccount.id}"></span>
 </head>
 <body>
-	<h1>LogIn</h1>
-	<ul th:each="error: ${errors}">
-		<li th:text="${error}"></li>
-	</ul>
-	<form action="/account/sign_in" method="post">
-		<table>
-			<tr>
-				<th>ユーザーID</th>
-				<td><input type="text" name="id" placeholder="ユーザーID"></td>
-			</tr>
-			<tr>
-				<th>パスワード</th>
-				<td><input type="text" name="password" placeholder="パスワード"></td>
-			</tr>
-		</table>
-		<button>ログイン</button>
-		<a href="/account/sign_up">新規登録</a>
-	</form>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-3"></div>
+				<div class="mx-auto col-6">
+					<h1>LogIn</h1>
+					<ul th:each="error: ${errors}">
+						<li th:text="${error}"></li>
+					</ul>
+					<form action="/account/sign_in" method="post">
+						<table>
+							<tr>
+								<th>ユーザーID</th>
+								<td><input type="text" name="id" placeholder="ユーザーID"></td>
+							</tr>
+							<tr>
+								<th>パスワード</th>
+								<td><input type="text" name="password" placeholder="パスワード"></td>
+							</tr>
+						</table>
+						<button class="btn btn-success">ログイン</button>
+					</form>
+					<a href="/account/sign_up" class="btn btn-primary">新規登録</a>
+				</div>
+				<div class="col-3"></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
