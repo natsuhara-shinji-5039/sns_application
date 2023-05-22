@@ -128,7 +128,10 @@ public class AccountController {
 		return "account/login";
 	}
 	
-	
+	@GetMapping("/")
+	public String test() {
+		return "layouts/template";
+	}
 	
 	
 	

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
-<span th:text="${@sessionAccount.name}"></span>
-<span th:text="${@sessionAccount.id}"></span>
 </head>
 <body>
+	<div layout:fragment="content">
 	<h1>LogIn</h1>
 	<ul th:each="error: ${errors}">
 		<li th:text="${error}"></li>
@@ -25,5 +26,6 @@
 		<button>ログイン</button>
 		<a href="/account/sign_up">新規登録</a>
 	</form>
+	</div>
 </body>
 </html>
