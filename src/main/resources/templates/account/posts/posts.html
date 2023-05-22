@@ -9,9 +9,21 @@
 <body>
 	<div layout:fragment="content">
 		<h1>一覧ページ</h1>
-		<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
-			<span th:text="${post.name}"></span>
-			<p th:text="${post.body}"></p>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<h1>test</h1>
+					<h1>test2</h1>
+					<h1>test3</h1>
+					<h1>test4</h1>
+				</div>
+				<div class="col-md-8 offset-md-1">
+					<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
+						<span th:text="${post.name}"></span>
+						<p th:text="${post.body}"></p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
