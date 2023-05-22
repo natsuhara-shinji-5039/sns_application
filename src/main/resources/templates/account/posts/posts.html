@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
 <title>一覧ページ</title>
 </head>
 <body>
-	<h1>一覧ページ</h1>
-	<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
-		<span th:text="${post.name}"></span>
-		<p th:text="${post.body}"></p>
+	<div layout:fragment="content">
+		<h1>一覧ページ</h1>
+		<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
+			<span th:text="${post.name}"></span>
+			<p th:text="${post.body}"></p>
+		</div>
 	</div>
 </body>
 </html>

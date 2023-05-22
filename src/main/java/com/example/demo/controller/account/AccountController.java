@@ -133,7 +133,12 @@ public class AccountController {
 	public String myPage(Model model) {
 		List<Account> account = accountRepository.findById(sessionAccount.getId());
 		model.addAttribute("account", account.get(0));
-		return "account/myPage";
+		return "account/myPage/myPage";
+	}
+
+	@GetMapping("/")
+	public String test() {
+		return "layouts/template";
 	}
 	
 	
