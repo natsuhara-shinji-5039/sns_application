@@ -1,5 +1,9 @@
 package com.example.demo.controller.account;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,12 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Account;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
 
 import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class AccountController {
@@ -153,8 +159,16 @@ public class AccountController {
 			@RequestParam(name="introduction", defaultValue="") String introduction,
 			@RequestParam(name="password", defaultValue="") String password,
 			@RequestParam(name="birthday", defaultValue="") String birthday,
-			Model model) {
+			@RequestParam(name = "profile_image", defaultValue="") MultipartFile profileImage,
+			Model model) throws IOException {
 		Account account = accountRepository.findById(id).get(0);
+	    
+		String fileName= profileImage.getOriginalFilename();
+	    Path filePath=Paths.get("static/" + fileName);
+		Files.copy(profileImage.getInputStream(), filePath);
+//		storageService.store(profileImage);
+//		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + profileImage.getOriginalFilename() + "!");
+		
 		String imagePath = "";
 		LocalDate birthdayDate = LocalDate.parse(birthday);
 		account.setId(id);
@@ -172,6 +186,7 @@ public class AccountController {
 
 	@GetMapping("/")
 	public String test() {
+		
 		return "layouts/template";
 	}
 	
