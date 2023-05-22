@@ -1,5 +1,6 @@
 package com.example.demo.controller.account;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +9,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,14 +164,19 @@ public class AccountController {
 			@RequestParam(name = "profile_image", defaultValue="") MultipartFile profileImage,
 			Model model) throws IOException {
 		Account account = accountRepository.findById(id).get(0);
-	    
-		String fileName= profileImage.getOriginalFilename();
+		
+		if(account.getImagePath() != null) {
+			File file = new File(account.getImagePath());
+			file.delete();
+		}
+		String originalFileName= profileImage.getOriginalFilename();
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+		UUID uuid = UUID.randomUUID();
+        String fileName = uuid.toString() + extension;
 	    Path filePath=Paths.get("static/" + fileName);
 		Files.copy(profileImage.getInputStream(), filePath);
-//		storageService.store(profileImage);
-//		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + profileImage.getOriginalFilename() + "!");
 		
-		String imagePath = "";
+		String imagePath = fileName;
 		LocalDate birthdayDate = LocalDate.parse(birthday);
 		account.setId(id);
 		account.setName(name);
@@ -177,6 +184,7 @@ public class AccountController {
 		account.setPassword(password);
 		account.setIntroduction(introduction);
 		account.setBirthday(birthdayDate);
+		account.setImagePath(imagePath);
 		account.setUpdatedAt();
 		accountRepository.save(account);
 		sessionAccount.setName(account.getName());

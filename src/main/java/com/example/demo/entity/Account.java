@@ -111,6 +111,10 @@ public class Account {
 		this.birthday = birthday;
 	}
 	
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
 	public void setUpdatedAt() {
 		this.updatedAt = LocalDateTime.now();
 	}
