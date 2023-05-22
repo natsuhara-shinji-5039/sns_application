@@ -82,7 +82,11 @@ public class AccountController {
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
+<<<<<<< HEAD
 			return "redirect:/posts";
+=======
+			return "redirect:/my_page";
+>>>>>>> develop
 		}
 	}
 	
@@ -118,7 +122,7 @@ public class AccountController {
 		} else {
 			sessionAccount.setName(account.get(0).getName());
 			sessionAccount.setId(account.get(0).getId());
-			return "account/login";
+			return "redirect:/my_page";
 		}
 	}
 	
@@ -129,7 +133,18 @@ public class AccountController {
 		return "account/login";
 	}
 	
-	
+	// アカウントマイページ
+	@GetMapping("/my_page")
+	public String myPage(Model model) {
+		List<Account> account = accountRepository.findById(sessionAccount.getId());
+		model.addAttribute("account", account.get(0));
+		return "account/myPage/myPage";
+	}
+
+	@GetMapping("/")
+	public String test() {
+		return "layouts/template";
+	}
 	
 	
 	

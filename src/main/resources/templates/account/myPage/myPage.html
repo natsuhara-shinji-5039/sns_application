@@ -4,26 +4,28 @@
 	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
-<title>一覧ページ</title>
+<title>ユーザーページ</title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1>一覧ページ</h1>
-		<a href="/posts/new">新規作成</a>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3">
 					<h1>test</h1>
-					<h1>test2</h1>
-					<h1>test3</h1>
-					<h1>test4</h1>
 				</div>
 				<div class="col-md-8 offset-md-1">
-					<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
-						<span th:text="${post.name}"></span>
-						<p th:text="${post.body}"></p>
-						<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
-					</div>
+					<table>
+						<tr>
+							<img th:src="@{/images/no_image.png}" width="100px" height="100px">
+						</tr>
+						<tr>
+							<th>名前</th>
+							<th th:text="${account.name}"></th>
+						</tr>
+						<tr>
+							<th th:text="${account.email}"></th>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
