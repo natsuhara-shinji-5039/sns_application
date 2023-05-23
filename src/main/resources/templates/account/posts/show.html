@@ -12,6 +12,9 @@
 		<p th:text="${post.name}"></p>
 		<p th:text="${post.body}"></p>
 		<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+		<form th:action="'/posts/' + ${post.id} + '/delete'" method="post" th:if="${@sessionAccount.id == post.userId}">
+			<button class="btn btn-danger">削除</button>
+		</form>
 	</div>
 </body>
 </html>
