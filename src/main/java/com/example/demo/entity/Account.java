@@ -24,9 +24,6 @@ public class Account {
 	
 	private LocalDate birthday;
 	
-	@Column(name = "image_path")
-	private String imagePath;
-	
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 	
@@ -37,14 +34,13 @@ public class Account {
 		
 	}
 	
-	public Account(String id, String name, String email, String introduction, String password, LocalDate birthday, String imagePath) {
+	public Account(String id, String name, String email, String introduction, String password, LocalDate birthday) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.introduction = introduction;
 		this.password = password;
 		this.birthday = birthday;
-		this.imagePath = imagePath;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
@@ -72,10 +68,6 @@ public class Account {
 	
 	public LocalDate getBirthday() {
 		return birthday;
-	}
-	
-	public String getImagePath() {
-		return imagePath;
 	}
 	
 	public LocalDateTime getcreatedAt() {
@@ -109,10 +101,6 @@ public class Account {
 	
 	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
-	}
-	
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
 	}
 	
 	public void setUpdatedAt() {
