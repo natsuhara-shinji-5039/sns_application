@@ -19,9 +19,6 @@ public class Post {
 	@Column(name = "user_id")
 	private String userId;
 	
-	@Column(name = "category_id")
-	private Integer categoryId;
-	
 	private String body;
 	
 	@Column(name = "created_at")
@@ -35,9 +32,8 @@ public class Post {
 		
 	}
 	
-	public Post(String userId, Integer categoryId, String body) {
+	public Post(String userId, String body) {
 		this.userId = userId;
-		this.categoryId = categoryId;
 		this.body = body;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
@@ -50,10 +46,6 @@ public class Post {
 	
 	public String getUserId() {
 		return userId;
-	}
-	
-	public Integer getCategoryId() {
-		return categoryId;
 	}
 	
 	public String getBody() {

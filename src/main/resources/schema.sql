@@ -15,7 +15,6 @@ CREATE TABLE accounts
    introduction TEXT,
    password VARCHAR,
    birthday DATE,
-   image_path TEXT,
    created_at TIMESTAMP NOT NULL,
    updated_at TIMESTAMP NOT NULL,
    UNIQUE (id, email)
@@ -26,7 +25,6 @@ CREATE TABLE posts
 (
    id SERIAL PRIMARY KEY,
    user_id VARCHAR,
-   category_id INTEGER,
    body TEXT,
    created_at TIMESTAMP NOT NULL,
    updated_at TIMESTAMP NOT NULL
@@ -39,7 +37,6 @@ CREATE VIEW v_posts AS
       p.id,
       a.name,
       p.user_id,
-      p.category_id,
       p.body,
       p.created_at,
       p.updated_at
