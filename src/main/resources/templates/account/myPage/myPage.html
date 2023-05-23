@@ -19,11 +19,23 @@
 							<img th:src="${imagePath}" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
 						</tr>
 						<tr>
+							<td><a href="/my_page/edit">プロフィール編集</a></td>
+						</tr>
+						<tr>
 							<th>名前</th>
 							<th th:text="${account.name}"></th>
 						</tr>
 						<tr>
+							<th>メールアドレス</th>
 							<th th:text="${account.email}"></th>
+						</tr>
+						<tr>
+							<th>生年月日</th>
+							<th th:text="${account.birthday}"></th>
+						</tr>
+						<tr>
+							<th>紹介文</th>
+							<td th:text="${account.introduction}"></td>
 						</tr>
 					</table>
 				</div>
