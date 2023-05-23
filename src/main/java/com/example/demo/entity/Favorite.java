@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "favorite")
+@Table(name = "favorites")
 public class Favorite {
 	
 	@Id
