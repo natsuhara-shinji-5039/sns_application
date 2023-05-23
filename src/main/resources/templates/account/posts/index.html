@@ -19,10 +19,13 @@
 					<h1>test4</h1>
 				</div>
 				<div class="col-md-8 offset-md-1">
-					<div th:each="post: ${posts}"> <span>@[[${post.userId}]]</span>
+					<div th:each="post: ${posts}">
+						<img th:src="${post.userId} + '.png'" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
+						<span>@[[${post.userId}]]</span>
 						<span th:text="${post.name}"></span>
 						<p th:text="${post.body}"></p>
 						<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+						<hr>
 					</div>
 				</div>
 			</div>

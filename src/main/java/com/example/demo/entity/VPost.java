@@ -18,9 +18,6 @@ public class VPost {
 	@Column(name = "user_id")
 	private String userId;
 	
-	@Column(name = "category_id")
-	private Integer categoryId;
-	
 	private String body;
 	
 	@Column(name = "created_at")
@@ -40,10 +37,6 @@ public class VPost {
 	
 	public String getUserId() {
 		return userId;
-	}
-	
-	public Integer getCategoryId() {
-		return categoryId;
 	}
 	
 	public String getBody() {

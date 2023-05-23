@@ -44,15 +44,15 @@ public class PostController {
 	public String store(
 			@RequestParam(name="body", defaultValue="") String body,
 			Model model) {
-		Post post = new Post(sessionAccount.getId(), 1, body);
+		Post post = new Post(sessionAccount.getId(), body);
 		postRepository.save(post);
-		return "redirect:/posts/new";
+		return "redirect:/posts";
 	}
 	
 	// 一覧ページ
 	@GetMapping("/posts")
 	public String index(Model model) {
-		List<VPost> posts = vPostRepository.findAll();
+		List<VPost> posts = vPostRepository.findAllByOrderByIdDesc();
 		model.addAttribute("posts", posts);
 		return "account/posts/index";
 	}
