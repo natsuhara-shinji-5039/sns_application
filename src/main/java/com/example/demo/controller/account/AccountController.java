@@ -83,9 +83,8 @@ public class AccountController {
 			model.addAttribute("errors", errors);
 			return "/account/signUp";
 		} else {
-			String imagePath = "";
 			LocalDate birthdayDate = LocalDate.parse(birthday);
-			Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
+			Account account = new Account(id, name, email, introduction, password, birthdayDate);
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
@@ -141,6 +140,7 @@ public class AccountController {
 	public String myPage(Model model) {
 		List<Account> account = accountRepository.findById(sessionAccount.getId());
 		model.addAttribute("account", account.get(0));
+		model.addAttribute("imagePath", account.get(0).getId() + ".png");
 		return "account/myPage/myPage";
 	}
 	
@@ -169,10 +169,9 @@ public class AccountController {
 //		UUID uuid = UUID.randomUUID();
 //        String fileName = uuid.toString() + extension;
 //	    Path filePath=Paths.get("static/" + fileName);
-		Path filePath=Paths.get("static/" + account.getName() + ".png");
+		Path filePath=Paths.get("static/" + account.getId() + ".png");
 		Files.copy(profileImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 		
-		String imagePath = account.getName() + ".png";
 		LocalDate birthdayDate = LocalDate.parse(birthday);
 		account.setId(id);
 		account.setName(name);
