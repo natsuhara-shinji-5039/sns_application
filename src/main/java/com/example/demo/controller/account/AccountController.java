@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,9 +83,8 @@ public class AccountController {
 			model.addAttribute("errors", errors);
 			return "/account/signUp";
 		} else {
-			String imagePath = "";
 			LocalDate birthdayDate = LocalDate.parse(birthday);
-			Account account = new Account(id, name, email, introduction, password, birthdayDate, imagePath);
+			Account account = new Account(id, name, email, introduction, password, birthdayDate);
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
@@ -140,6 +140,7 @@ public class AccountController {
 	public String myPage(Model model) {
 		List<Account> account = accountRepository.findById(sessionAccount.getId());
 		model.addAttribute("account", account.get(0));
+		model.addAttribute("imagePath", account.get(0).getId() + ".png");
 		return "account/myPage/myPage";
 	}
 	
@@ -162,14 +163,15 @@ public class AccountController {
 			@RequestParam(name = "profile_image", defaultValue="") MultipartFile profileImage,
 			Model model) throws IOException {
 		Account account = accountRepository.findById(id).get(0);
-	    
-		String fileName= profileImage.getOriginalFilename();
-	    Path filePath=Paths.get("static/" + fileName);
-		Files.copy(profileImage.getInputStream(), filePath);
-//		storageService.store(profileImage);
-//		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + profileImage.getOriginalFilename() + "!");
 		
-		String imagePath = "";
+//		String originalFileName= profileImage.getOriginalFilename();
+//		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+//		UUID uuid = UUID.randomUUID();
+//        String fileName = uuid.toString() + extension;
+//	    Path filePath=Paths.get("static/" + fileName);
+		Path filePath=Paths.get("static/" + account.getId() + ".png");
+		Files.copy(profileImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+		
 		LocalDate birthdayDate = LocalDate.parse(birthday);
 		account.setId(id);
 		account.setName(name);
