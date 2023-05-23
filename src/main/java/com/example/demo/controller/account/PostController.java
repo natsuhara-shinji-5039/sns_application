@@ -66,4 +66,11 @@ public class PostController {
 		model.addAttribute("post", post);
 		return "account/posts/show";
 	}
+	
+	// 投稿削除
+	@PostMapping("posts/{id}/delete")
+	public String delete(@PathVariable("id") Integer id) {
+		postRepository.deleteById(id);
+		return "redirect:/posts";
+	}
 }
