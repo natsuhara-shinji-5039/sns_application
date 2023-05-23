@@ -28,4 +28,15 @@ public class Favorite {
 	
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
+	
+	public Favorite() {
+		
+	}
+	
+	public Favorite(String userId, Integer postId) {
+		this.userId = userId;
+		this.postId = postId;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
 }
