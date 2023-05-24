@@ -1,6 +1,7 @@
 package com.example.demo.controller.account;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.VPost;
 import com.example.demo.model.SessionAccount;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.VPostRepository;
 
@@ -33,6 +35,9 @@ public class PostController {
 	@Autowired
 	VPostRepository vPostRepository;
 	
+	@Autowired
+	FavoriteRepository favoriteRepository;
+	
 	// 新規登録ページ
 	@GetMapping("/posts/new")
 	public String create() {
@@ -52,8 +57,11 @@ public class PostController {
 	// 一覧ページ
 	@GetMapping("/posts")
 	public String index(Model model) {
+		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		List<VPost> posts = vPostRepository.findAllByOrderByIdDesc();
 		model.addAttribute("posts", posts);
+		model.addAttribute("favoriteCount", favoriteCount);
+		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
 		return "account/posts/index";
 	}
 	
@@ -63,7 +71,10 @@ public class PostController {
 			@PathVariable("id") Integer id,
 			Model model) {
 		VPost post = vPostRepository.findById(id).get();
+		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		model.addAttribute("post", post);
+		model.addAttribute("favoriteCount", favoriteCount);
+		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
 		return "account/posts/show";
 	}
 	
