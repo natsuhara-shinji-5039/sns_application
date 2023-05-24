@@ -27,9 +27,11 @@
 						<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
 						<th:block th:if="${myFavorites.contains(post.Id) == true}">
 							<a th:href="'/posts/' + ${post.id} + '/favorites'">♥</a>
+							[[${favoriteCount.get(post.Id)}]]
 						</th:block>
 						<th:block th:unless="${myFavorites.contains(post.Id) == true}">
 							<a th:href="'/posts/' + ${post.id} + '/favorites'">♡</a>
+							[[${favoriteCount.get(post.Id)}]]
 						</th:block>
 						<hr>
 					</div>
