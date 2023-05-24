@@ -25,14 +25,18 @@
 						<span th:text="${post.name}"></span>
 						<p th:text="${post.body}"></p>
 						<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+						
 						<th:block th:if="${myFavorites.contains(post.Id) == true}">
-							<a th:href="'/posts/' + ${post.id} + '/favorites'">♥</a>
+							<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="fas fa-heart"></i></a>
 							[[${favoriteCount.get(post.Id)}]]
+							<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
 						</th:block>
 						<th:block th:unless="${myFavorites.contains(post.Id) == true}">
-							<a th:href="'/posts/' + ${post.id} + '/favorites'">♡</a>
+							<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="far fa-heart"></i></a>
 							[[${favoriteCount.get(post.Id)}]]
+							<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
 						</th:block>
+						
 						<hr>
 					</div>
 				</div>

@@ -14,12 +14,14 @@
 		<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
 		
 		<th:block th:if="${myFavorites.contains(post.Id) == true}">
-		<a th:href="'/posts/' + ${post.id} + '/favorites'">♥</a>
-		[[${favoriteCount.get(post.Id)}]]
+			<a href="javascript:favorite.submit()"><i class="fas fa-heart"></i></a>
+			[[${favoriteCount.get(post.Id)}]]
+			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
 		</th:block>
 		<th:block th:unless="${myFavorites.contains(post.Id) == true}">
-		<a th:href="'/posts/' + ${post.id} + '/favorites'">♡</a>
-		[[${favoriteCount.get(post.Id)}]]
+			<a href="javascript:favorite.submit()"><i class="far fa-heart"></i></a>
+			[[${favoriteCount.get(post.Id)}]]
+			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
 		</th:block>
 		
 		<form th:action="'/posts/' + ${post.id} + '/delete'" method="post" th:if="${@sessionAccount.id == post.userId}">

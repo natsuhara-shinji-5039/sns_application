@@ -26,7 +26,6 @@ public class FavoriteController {
 	@RequestMapping("/posts/{id}/favorites")
 	@Transactional
 	public String favorite(@PathVariable("id") Integer postId) {
-		System.out.println("test");
 		if(favoriteRepository.existsByUserIdAndPostId(sessionAccount.getId(), postId) == true) {
 			favoriteRepository.deleteByUserIdAndPostId(sessionAccount.getId(), postId);
 		} else {

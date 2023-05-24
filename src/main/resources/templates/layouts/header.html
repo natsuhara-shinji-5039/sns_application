@@ -9,7 +9,7 @@
 		<!-- ナビゲーションバー -->
 		<nav class="navbar navbar-light bg-light fixed-top">
 			<!-- タイトル -->
-			<a class="navbar-brand" href="/posts">UserStories</a>
+			<a class="navbar-brand" href="/posts"><i class="fas fa-users"></i>UserStories</a>
 			<!-- ハンバーガーメニュー -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -18,24 +18,24 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav" th:if="${@sessionAccount == null || @sessionAccount.getName() == null || @sessionAccount.getName().length() == 0}">
 					<li class="nav-item active">
-						<a class="nav-link" href="/posts">Posts</a>
+						<a class="nav-link" href="/posts"><i class="fas fa-mail-bulk"></i>Posts</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/account/sign_in">SingIn</a>
+						<a class="nav-link" href="/account/sign_in"><i class="fas fa-sign-in-alt"><span> </span></i>SingIn</a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="/account/sign_up">SignUp</a>
+			          <a class="nav-link" href="/account/sign_up"><i class="fas fa-user-plus"></i>SignUp</a>
 			        </li>
 		    	</ul>
 		    	<ul class="navbar-nav" th:if="${@sessionAccount != null && @sessionAccount.getName() != null && @sessionAccount.getName().length() != 0}">
 					<li class="nav-item active">
-						<a class="nav-link" href="/posts">Posts</a>
+						<a class="nav-link" href="/posts"><i class="fas fa-mail-bulk"></i>Posts</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/my_page">MyPage</a>
+						<a class="nav-link" href="/my_page"><i class="fas fa-user"></i>MyPage</a>
 			        </li>
 			        <li class="nav-item">
-			          <a class="nav-link" href="/logout">LogOut</a>
+			          <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i>LogOut</a>
 			        </li>
 		    	</ul>
 			</div>
