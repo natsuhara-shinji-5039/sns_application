@@ -12,6 +12,16 @@
 		<p th:text="${post.name}"></p>
 		<p th:text="${post.body}"></p>
 		<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+		
+		<th:block th:if="${myFavorites.contains(post.Id) == true}">
+		<a th:href="'/posts/' + ${post.id} + '/favorites'">♥</a>
+		[[${favoriteCount.get(post.Id)}]]
+		</th:block>
+		<th:block th:unless="${myFavorites.contains(post.Id) == true}">
+		<a th:href="'/posts/' + ${post.id} + '/favorites'">♡</a>
+		[[${favoriteCount.get(post.Id)}]]
+		</th:block>
+		
 		<form th:action="'/posts/' + ${post.id} + '/delete'" method="post" th:if="${@sessionAccount.id == post.userId}">
 			<button class="btn btn-danger">削除</button>
 		</form>

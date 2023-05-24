@@ -61,7 +61,7 @@ public class PostController {
 		List<VPost> posts = vPostRepository.findAllByOrderByIdDesc();
 		model.addAttribute("posts", posts);
 		model.addAttribute("favoriteCount", favoriteCount);
-		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getName()));
+		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
 		return "account/posts/index";
 	}
 	
@@ -71,7 +71,10 @@ public class PostController {
 			@PathVariable("id") Integer id,
 			Model model) {
 		VPost post = vPostRepository.findById(id).get();
+		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		model.addAttribute("post", post);
+		model.addAttribute("favoriteCount", favoriteCount);
+		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
 		return "account/posts/show";
 	}
 	

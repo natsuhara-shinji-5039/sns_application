@@ -28,15 +28,9 @@ public class FavoriteController {
 	public String favorite(@PathVariable("id") Integer postId) {
 		System.out.println("test");
 		if(favoriteRepository.existsByUserIdAndPostId(sessionAccount.getId(), postId) == true) {
-			System.out.println("test2");
-			System.out.println(sessionAccount.getId());
-			System.out.println(postId);
 			favoriteRepository.deleteByUserIdAndPostId(sessionAccount.getId(), postId);
-			System.out.println("test9");
 		} else {
-			System.out.println("test3");
 			Favorite favorite = new Favorite(sessionAccount.getId(), postId);
-			System.out.println("test4");
 			favoriteRepository.save(favorite);
 		}
 		return "redirect:/posts";
