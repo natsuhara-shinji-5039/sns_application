@@ -21,13 +21,20 @@ public class CheckLoginAspect {
 		Signature sig = jp.getSignature();
 		System.err.println(sig.getDeclaringType().getSimpleName() + "#" + sig.getName());
 		//未処理の例外
+		// ログイン・新規登録ページの制限解除
 		if(sig.getDeclaringType().getSimpleName().equals("AccountController") 
 				&& (sig.getName().equals("index") 
 						|| sig.getName().equals("signUp")
 						|| sig.getName().equals("login")
 						|| sig.getName().equals("store"))) {
 			return jp.proceed();
-		} 
+		}
+		
+		// 投稿一覧ページのログイン制限解除
+		if(sig.getDeclaringType().getSimpleName().equals("PostController") 
+				&& (sig.getName().equals("index"))) {
+			return jp.proceed();
+		}
 		
 		if(sessionAccount == null || sessionAccount.getName() == null || sessionAccount.getName().length() == 0) {
 			System.err.println("ログインしていません");
