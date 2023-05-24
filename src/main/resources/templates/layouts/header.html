@@ -6,46 +6,46 @@
 </head>
 <body>
 	<div th:fragment="header">
-		<!-- ナビゲーションバー -->
-		<nav class="navbar navbar-light bg-light fixed-top">
-			<!-- タイトル -->
-			<a class="navbar-brand" href="/posts"><i class="fas fa-users"></i>UserStories</a>
-			<!-- ハンバーガーメニュー -->
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<!-- ナビゲーションメニュー -->
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav" th:if="${@sessionAccount == null || @sessionAccount.getName() == null || @sessionAccount.getName().length() == 0}">
-					<li class="nav-item active">
-						<a class="nav-link" href="/posts"><i class="fas fa-mail-bulk"></i>Posts</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/account/sign_in"><i class="fas fa-sign-in-alt"><span> </span></i>SingIn</a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link" href="/account/sign_up"><i class="fas fa-user-plus"></i>SignUp</a>
-			        </li>
-		    	</ul>
-		    	<ul class="navbar-nav" th:if="${@sessionAccount != null && @sessionAccount.getName() != null && @sessionAccount.getName().length() != 0}">
-					<li class="nav-item active">
-						<a class="nav-link" href="/posts"><i class="fas fa-mail-bulk"></i>Posts</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/my_page"><i class="fas fa-user"></i>MyPage</a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i>LogOut</a>
-			        </li>
-		    	</ul>
-			</div>
-		</nav>
-		
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-	<h1>test</h1>
+		<th:block class="container">
+		    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+		      <div class="col-md-3 mb-2 mb-md-0">
+		        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+		          <i class="bi bi-controller" width="40" height="32" role="img" aria-label="Bootstrap" style="font-size: 45px"><use xlink:href="#bootstrap"/></i>
+		        </a>
+		      </div>
+		      <th:block th:if="${@sessionAccount == null || @sessionAccount.getName() == null || @sessionAccount.getName().length() == 0}">
+			      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+			        <li><a class="nav-link px-2" href="/posts"><i class="fas fa-mail-bulk"></i>ホーム</a></li>
+			        <li><a href="#" class="nav-link px-2">FAQ</a></li>
+			        <li><a href="#" class="nav-link px-2">概要</a></li>
+			      </ul>
+			
+			      <div class="col-md-3 text-end">
+					<a class="btn btn-outline-primary me-2" href="/account/sign_in">
+						ログイン
+					</a>
+					<a class="btn btn-primary" href="/account/sign_up">
+						サインアップ
+					</a>
+			      </div>
+		      </th:block>
+		      
+		      <th:block th:if="${@sessionAccount != null && @sessionAccount.getName() != null && @sessionAccount.getName().length() != 0}">
+				  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+			        <li><a class="nav-link px-2" href="/posts"><i class="fas fa-mail-bulk"></i>ホーム</a></li>
+			        <li><a class="nav-link px-2" href="/my_page"><i class="fas fa-user"></i>マイページ</a></li>
+			        <li><a href="#" class="nav-link px-2">FAQ</a></li>
+			        <li><a href="#" class="nav-link px-2">概要</a></li>
+			      </ul>
+			
+			      <div class="col-md-3 text-end">
+					<a class="btn btn-danger" href="/logout">
+						<i class="fas fa-sign-out-alt"></i>LogOut
+					</a>
+			      </div>
+			  </th:block>
+		   </header>
+		</div>
 	</div>
 </body>
 </html>
