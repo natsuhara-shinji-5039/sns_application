@@ -8,17 +8,27 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<h1>一覧ページ</h1>
-		<a href="/posts/new">新規作成</a>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3">
-					<h1>test</h1>
-					<h1>test2</h1>
-					<h1>test3</h1>
-					<h1>test4</h1>
+					<span th:unless="${@sessionAccount == null || @sessionAccount.getName() == null || @sessionAccount.getName().length() == 0}">
+					<table>
+						<tr>
+							<th><img th:src="${@sessionAccount.getName()}" onerror="this.src='/images/no_image.png'" width="100px" height="100px"></th>
+						</tr>
+						<tr>
+							<th>ユーザー名</th>
+							<td th:text="${@sessionAccount.getName()}"></td>
+						</tr>
+					</table>
+					<span>@[[${@sessionAccount.id}]]</span>
+					<form action="/posts" method="post">
+						<textarea name="body" placeholder="投稿内容を入力してください"></textarea>
+						<button>投稿</button>
+					</form>
+					</span>
 				</div>
-				<div class="col-md-8 offset-md-1">
+				<div class="col-md-8">
 					<div th:each="post: ${posts}">
 						<img th:src="${post.userId} + '.png'" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
 						<span>@[[${post.userId}]]</span>
