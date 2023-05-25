@@ -16,6 +16,7 @@ import com.example.demo.entity.VPost;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
+import com.example.demo.repository.RelationshipRepository;
 import com.example.demo.repository.VPostRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +39,9 @@ public class PostController {
 	@Autowired
 	FavoriteRepository favoriteRepository;
 	
+	@Autowired
+	RelationshipRepository relationshipRepository;
+	
 	// 新規登録ページ
 	@GetMapping("/posts/new")
 	public String create() {
@@ -57,11 +61,20 @@ public class PostController {
 	// 一覧ページ
 	@GetMapping("/posts")
 	public String index(Model model) {
-		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		List<VPost> posts = vPostRepository.findAllByOrderByIdDesc();
 		model.addAttribute("posts", posts);
+		// いいね
+		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
+		// フォロー
+		System.out.println("test1");
+		Map<String, Long> followedCount = relationshipRepository.findFollowedCount();
+		System.out.println("test2");
+		model.addAttribute("folloewerCount", followedCount);
+		System.out.println("test3");
+		model.addAttribute("myFollow", relationshipRepository.findMyFollow(sessionAccount.getId()));
+		System.out.println("test4");
 		return "account/posts/index";
 	}
 	

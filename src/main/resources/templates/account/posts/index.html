@@ -35,7 +35,20 @@
 						<span th:text="${post.name}"></span>
 						<p th:text="${post.body}"></p>
 						<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
+						<!-- フォロー -->
+						<th:block th:if="${myFollow.contains(post.UserId) == true}">
+							<a th:href="'javascript:follow' + ${post.UserId} + '.submit()'">フォロー解除</a>
+							フォロワー数[[${folloewerCount.get(post.UserId)}]]
+							<form th:action="'/accounts/' + ${post.userId} + '/follow'" method="post" th:name="'follow' + ${post.userId}"></form>
+						</th:block>
 						
+						<th:block th:unless="${myFollow.contains(post.UserId) == true}">
+							<a th:href="'javascript:follow' + ${post.UserId} + '.submit()'">フォローする</a>
+							フォロワー数[[${folloewerCount.get(post.UserId)}]]
+							<form th:action="'/accounts/' + ${post.userId} + '/follow'" method="post" th:name="'follow' + ${post.userId}"></form>
+						</th:block>
+						
+						<!-- いいね -->
 						<th:block th:if="${myFavorites.contains(post.Id) == true}">
 							<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="fas fa-heart"></i></a>
 							[[${favoriteCount.get(post.Id)}]]
@@ -46,6 +59,8 @@
 							[[${favoriteCount.get(post.Id)}]]
 							<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
 						</th:block>
+						
+						
 						
 						<hr>
 					</div>
