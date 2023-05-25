@@ -98,7 +98,7 @@ public class AccountController {
 			sessionAccount.setId(account.getId());
 			
 			SimpleMailMessage msg = new SimpleMailMessage();
-		    msg.setTo("shinzi7280.18@gmail.com");// To
+		    msg.setTo("@gmail.com");// To
 
 		    String insertMessage = "Test from Spring Mail" + LINE_SEPARATOR;
 		    insertMessage += "Test from Spring Mail" + LINE_SEPARATOR;
