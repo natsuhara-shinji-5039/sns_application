@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# メール設定のpush除外
+/src/main/resources/application.properties
