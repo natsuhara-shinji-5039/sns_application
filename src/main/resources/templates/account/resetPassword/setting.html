@@ -6,7 +6,21 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		
+		<form action="/account/confirm/mail" method="post">
+			<table>
+				<tr>
+					<th>メールアドレス</th>
+					<td><input type="text" name="email"></td>
+				</tr>
+				<tr>
+					<th>メールアドレス</th>
+					<td><input type="text" name="confirm_email"></td>
+				</tr>
+				<tr>
+					<td><button>送信</button></td>
+				</tr>
+			</table>
+		</form>
 	</div>
 </body>
 </html>

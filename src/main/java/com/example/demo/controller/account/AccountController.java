@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -24,6 +25,8 @@ import com.example.demo.entity.Account;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -205,21 +208,67 @@ public class AccountController {
 		sessionAccount.setId(account.getId());
 		return "redirect:/my_page";
 	}
+	
+	// パスワードリセットメール確認画面
+	@GetMapping("/account/reset_password") 
+	public String confirm(){
+		return "resetPassword/setting";
+	}
+	
+	@PostMapping("/account/confirm/mail")
+	public String confirmMail(
+			@RequestParam(name = "email", defaultValue = "") String email,
+			@RequestParam(name = "confirm_mail", defaultValue = "") String confirmEmail,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		// エラーチェック
+		List<String> errors = new ArrayList<>();
+		if(email.equals("")) {
+			errors.add("メールアドレスを入力してください");
+		}
+		if(confirmEmail.equals("")) {
+			errors.add("確認用メールアドレスを入力して下さい");
+		}
+		if(errors.size() == 0 && !email.equals(confirmEmail)) {
+			errors.add("メールアドレスが一致しません");
+		}
+		
+		List<Account> account = accountRepository.findByEmail(email);
+		if(errors.size() == 0 && account.size() == 0) {
+			errors.add("お使いのメールアドレスのアカウントが存在しません");
+		}
+		
+		if(errors.size() != 0) {
+			return "resetPassword/setting";
+		} else {
+			UUID uuid = UUID.randomUUID();
+			String url = request.getScheme() + request.getServerName() + request.getServerPort() + uuid.toString();
+			
+			SimpleMailMessage msg = new SimpleMailMessage();
+		    msg.setTo(account.get(0).getEmail());
+
+		    String insertMessage = "以下のurlからパスワードの再設定を行ってください。" + LINE_SEPARATOR;
+		    insertMessage += url + LINE_SEPARATOR;
+		    insertMessage += "また、パスワード再設定の有効時間は30分です。" + LINE_SEPARATOR;
+
+		    msg.setSubject("パスワードの再設定");// Set Title
+		    msg.setText(insertMessage);// Set Message
+		    mailSender.send(msg);
+			
+			return "redirect:/account/confirm";
+		}
+	}
+	
+	@GetMapping("/account/confirm")
+	public String confirmResult() {
+		return "resetPassword/confirm";
+	}
 
 	@GetMapping("/")
 	public String test() {
 		
 		return "layouts/template";
 	}
-	
-	
-	@PostMapping("/")
-	  public String sendMail() {
-
-	      
-
-	    return "index";
-	  }
 	
 	
 	
