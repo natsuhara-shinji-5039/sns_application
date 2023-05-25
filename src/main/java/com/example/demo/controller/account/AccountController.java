@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,12 @@ public class AccountController {
 	
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	private MailSender mailSender;
+	
+	// メール改行文字
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	// 新規登録画面
 	@GetMapping("/account/sign_up")
@@ -88,6 +96,17 @@ public class AccountController {
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
+			
+			SimpleMailMessage msg = new SimpleMailMessage();
+		    msg.setTo("shinzi7280.18@gmail.com");// To
+
+		    String insertMessage = "Test from Spring Mail" + LINE_SEPARATOR;
+		    insertMessage += "Test from Spring Mail" + LINE_SEPARATOR;
+
+		    msg.setSubject("新規登録の完了");// Set Title
+		    msg.setText(insertMessage);// Set Message
+		    mailSender.send(msg);
+			
 			return "redirect:/my_page";
 		}
 	}
@@ -97,6 +116,7 @@ public class AccountController {
 	public String index() {
 		return "account/login";
 	}
+	
 	
 	// ログイン処理
 	@PostMapping("/account/sign_in")
@@ -191,6 +211,15 @@ public class AccountController {
 		
 		return "layouts/template";
 	}
+	
+	
+	@PostMapping("/")
+	  public String sendMail() {
+
+	      
+
+	    return "index";
+	  }
 	
 	
 	
