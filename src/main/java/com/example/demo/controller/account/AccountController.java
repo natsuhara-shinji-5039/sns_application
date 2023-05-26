@@ -14,6 +14,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import com.example.demo.entity.Account;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -40,6 +44,9 @@ public class AccountController {
 	
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	private JavaMailSender sender;
 	
 	@Autowired
 	private MailSender mailSender;
@@ -220,7 +227,7 @@ public class AccountController {
 			@RequestParam(name = "email", defaultValue = "") String email,
 			@RequestParam(name = "confirm_email", defaultValue = "") String confirmEmail,
 			HttpServletRequest request, HttpServletResponse response,
-			Model model) {
+			Model model) throws MessagingException {
 		// エラーチェック
 		System.out.println("test1");
 		List<String> errors = new ArrayList<>();
@@ -255,10 +262,10 @@ public class AccountController {
 //			};
 			
 			// urlの作成
-			String url = request.getScheme() + "/" + request.getServerName() + "/" + request.getServerPort() + "/" + uuid.toString();
+			String url = request.getScheme() + "://" + request.getServerName() + "/" + request.getServerPort() + "/" + uuid.toString();
 			
-			SimpleMailMessage msg = new SimpleMailMessage();
-		    msg.setTo(email);
+//			SimpleMailMessage msg = new SimpleMailMessage();
+//		    msg.setTo(email);
 		    
 		    String insertMessage = "<html>"
 	          + "<head></head>"
@@ -268,14 +275,21 @@ public class AccountController {
 	          + "<p>また、パスワード再設定の有効時間は30分です。</p>"
 	          + "</body>"
 	          + "</html>";
+		    MimeMessage message = sender.createMimeMessage();
+		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		    helper.setText("本文", insertMessage);
+		    helper.setSubject("パスワードの再設定");
+			helper.setTo(email);
+		    
+		    sender.send(message);
 
 //		    String insertMessage = "以下のurlからパスワードの再設定を行ってください。" + LINE_SEPARATOR;
 //		    insertMessage += url + LINE_SEPARATOR;
 //		    insertMessage += "また、パスワード再設定の有効時間は30分です。" + LINE_SEPARATOR;
 
-		    msg.setSubject("パスワードの再設定");// Set Title
-		    msg.setText(insertMessage);// Set Message
-		    mailSender.send(msg);
+//		    msg.setSubject("パスワードの再設定");// Set Title
+//		    msg.setText(insertMessage);// Set Message
+//		    mailSender.send(msg);
 			
 			return "redirect:/account/confirm";
 		}
