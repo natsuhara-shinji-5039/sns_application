@@ -301,7 +301,8 @@ public class AccountController {
 	}
 	
 	@GetMapping("/reset_password/{id}")
-	public String resetPassword() {
+	public String resetPassword(Model model) {
+		
 		return "account/resetPassword/result";
 	}
 
