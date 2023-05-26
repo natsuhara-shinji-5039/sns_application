@@ -15,12 +15,12 @@
 		
 		<th:block th:if="${myFavorites.contains(post.Id) == true}">
 			<a href="javascript:favorite.submit()"><i class="fas fa-heart"></i></a>
-			[[${favoriteCount.get(post.Id)}]]
+			[[${favoriteCount}]]
 			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
 		</th:block>
 		<th:block th:unless="${myFavorites.contains(post.Id) == true}">
 			<a href="javascript:favorite.submit()"><i class="far fa-heart"></i></a>
-			[[${favoriteCount.get(post.Id)}]]
+			[[${favoriteCount}]]
 			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
 		</th:block>
 		

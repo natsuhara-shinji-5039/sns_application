@@ -71,7 +71,7 @@ public class PostController {
 			@PathVariable("id") Integer id,
 			Model model) {
 		VPost post = vPostRepository.findById(id).get();
-		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
+		Integer favoriteCount = favoriteRepository.countByPostId(id);
 		model.addAttribute("post", post);
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));

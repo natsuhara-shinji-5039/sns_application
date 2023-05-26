@@ -13,6 +13,9 @@ import com.example.demo.entity.Favorite;
 public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 	boolean existsByUserIdAndPostId(String userId, Integer PostId);
 	void deleteByUserIdAndPostId(String userId, Integer postId);
+
+	// いいねカウント
+	Integer countByPostId(Integer postId);
 	
 	@Query(value = "SELECT post_id, count(*) FROM favorites GROUP BY post_id", nativeQuery = true)
 	public List<Object[]> getFavoriteCount();
