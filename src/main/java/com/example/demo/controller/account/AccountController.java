@@ -262,7 +262,7 @@ public class AccountController {
 //			};
 			
 			// urlの作成
-			String url = request.getScheme() + "://" + request.getServerName() + "/" + request.getServerPort() + "/" + uuid.toString();
+			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/reset_password/" + uuid.toString();
 			
 //			SimpleMailMessage msg = new SimpleMailMessage();
 //		    msg.setTo(email);
@@ -300,8 +300,10 @@ public class AccountController {
 		return "account/resetPassword/confirm";
 	}
 	
-//	@GetMapping("/reset_password/{id}")
-//	public String 
+	@GetMapping("/reset_password/{id}")
+	public String resetPassword() {
+		return "account/resetPassword/result";
+	}
 
 	@GetMapping("/")
 	public String test() {

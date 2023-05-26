@@ -29,7 +29,8 @@ public class CheckLoginAspect {
 						|| sig.getName().equals("store")
 						|| sig.getName().equals("confirm")
 						|| sig.getName().equals("confirmMail")
-						|| sig.getName().equals("confirmResult"))) {
+						|| sig.getName().equals("confirmResult")
+						|| sig.getName().equals("resetPassword"))) {
 			return jp.proceed();
 		}
 		
