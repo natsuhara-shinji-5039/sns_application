@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS reset_passwords;
 
 -- アカウントテーブル
 CREATE TABLE accounts
@@ -73,4 +74,13 @@ CREATE TABLE favorites
    post_id INTEGER,
    created_at TIMESTAMP NOT NULL,
    updated_at TIMESTAMP NOT NULL
+);
+
+-- パスワードリセットテーブル
+CREATE TABLE reset_passwords
+(
+   id VARCHAR PRIMARY KEY,
+   user_id VARCHAR,
+   email VARCHAR,
+   created_at TIMESTAMP NOT NULL
 );

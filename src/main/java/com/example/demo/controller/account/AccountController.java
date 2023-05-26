@@ -101,9 +101,9 @@ public class AccountController {
 			sessionAccount.setId(account.getId());
 			
 			SimpleMailMessage msg = new SimpleMailMessage();
-		    msg.setTo("@gmail.com");// To
+		    msg.setTo(account.getEmail());// To
 
-		    String insertMessage = "Test from Spring Mail" + LINE_SEPARATOR;
+		    String insertMessage = "登録完了しました。" + LINE_SEPARATOR;
 		    insertMessage += "Test from Spring Mail" + LINE_SEPARATOR;
 
 		    msg.setSubject("新規登録の完了");// Set Title
@@ -186,7 +186,7 @@ public class AccountController {
 			@RequestParam(name = "profile_image", defaultValue="") MultipartFile profileImage,
 			Model model) throws IOException {
 		Account account = accountRepository.findById(id).get(0);
-		
+//		一意な画像ファイル名の作成
 //		String originalFileName= profileImage.getOriginalFilename();
 //		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 //		UUID uuid = UUID.randomUUID();
@@ -212,44 +212,66 @@ public class AccountController {
 	// パスワードリセットメール確認画面
 	@GetMapping("/account/reset_password") 
 	public String confirm(){
-		return "resetPassword/setting";
+		return "account/resetPassword/setting";
 	}
 	
 	@PostMapping("/account/confirm/mail")
 	public String confirmMail(
 			@RequestParam(name = "email", defaultValue = "") String email,
-			@RequestParam(name = "confirm_mail", defaultValue = "") String confirmEmail,
+			@RequestParam(name = "confirm_email", defaultValue = "") String confirmEmail,
 			HttpServletRequest request, HttpServletResponse response,
 			Model model) {
 		// エラーチェック
+		System.out.println("test1");
 		List<String> errors = new ArrayList<>();
 		if(email.equals("")) {
+			System.out.println("test2");
 			errors.add("メールアドレスを入力してください");
 		}
 		if(confirmEmail.equals("")) {
+			System.out.println("test3");
 			errors.add("確認用メールアドレスを入力して下さい");
 		}
 		if(errors.size() == 0 && !email.equals(confirmEmail)) {
+			System.out.println("test4");
 			errors.add("メールアドレスが一致しません");
 		}
-		
+		System.out.println("test5");
 		List<Account> account = accountRepository.findByEmail(email);
 		if(errors.size() == 0 && account.size() == 0) {
+			System.out.println("test6");
 			errors.add("お使いのメールアドレスのアカウントが存在しません");
 		}
 		
 		if(errors.size() != 0) {
-			return "resetPassword/setting";
+			System.out.println("test7");
+			model.addAttribute("errors", errors);
+			return "account/resetPassword/setting";
 		} else {
 			UUID uuid = UUID.randomUUID();
-			String url = request.getScheme() + request.getServerName() + request.getServerPort() + uuid.toString();
+			
+//			while() {
+//				
+//			};
+			
+			// urlの作成
+			String url = request.getScheme() + "/" + request.getServerName() + "/" + request.getServerPort() + "/" + uuid.toString();
 			
 			SimpleMailMessage msg = new SimpleMailMessage();
-		    msg.setTo(account.get(0).getEmail());
+		    msg.setTo(email);
+		    
+		    String insertMessage = "<html>"
+	          + "<head></head>"
+	          + "<body>"
+	          + "<p>以下のurlからパスワードの再設定を行ってください。</p>"
+	          + "<p><a href='" + url + "'> " +  url +"</a></p>"
+	          + "<p>また、パスワード再設定の有効時間は30分です。</p>"
+	          + "</body>"
+	          + "</html>";
 
-		    String insertMessage = "以下のurlからパスワードの再設定を行ってください。" + LINE_SEPARATOR;
-		    insertMessage += url + LINE_SEPARATOR;
-		    insertMessage += "また、パスワード再設定の有効時間は30分です。" + LINE_SEPARATOR;
+//		    String insertMessage = "以下のurlからパスワードの再設定を行ってください。" + LINE_SEPARATOR;
+//		    insertMessage += url + LINE_SEPARATOR;
+//		    insertMessage += "また、パスワード再設定の有効時間は30分です。" + LINE_SEPARATOR;
 
 		    msg.setSubject("パスワードの再設定");// Set Title
 		    msg.setText(insertMessage);// Set Message
@@ -261,8 +283,11 @@ public class AccountController {
 	
 	@GetMapping("/account/confirm")
 	public String confirmResult() {
-		return "resetPassword/confirm";
+		return "account/resetPassword/confirm";
 	}
+	
+//	@GetMapping("/reset_password/{id}")
+//	public String 
 
 	@GetMapping("/")
 	public String test() {
