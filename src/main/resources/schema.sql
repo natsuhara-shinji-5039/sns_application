@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS favorites;
 DROP TABLE IF EXISTS relationships;
+DROP TABLE IF EXISTS reset_passwords;
 
 -- アカウントテーブル
 CREATE TABLE accounts
