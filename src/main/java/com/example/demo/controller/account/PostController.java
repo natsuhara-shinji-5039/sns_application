@@ -68,13 +68,15 @@ public class PostController {
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
 		// フォロー
-		System.out.println("test1");
-		Map<String, Long> followedCount = relationshipRepository.findFollowedCount();
-		System.out.println("test2");
-		model.addAttribute("folloewerCount", followedCount);
-		System.out.println("test3");
+//		Map<String, Long> followedCount = relationshipRepository.findFollowedCount();
+//		model.addAttribute("folloewerCount", followedCount);
 		model.addAttribute("myFollow", relationshipRepository.findMyFollow(sessionAccount.getId()));
-		System.out.println("test4");
+		// ユーザーフォロー数
+		Integer followerCount = relationshipRepository.countByFollowerId(sessionAccount.getId());
+		model.addAttribute("followerCount", followerCount);
+		// ユーザーフォロワー数
+		Integer followedCount = relationshipRepository.countByFollowedId(sessionAccount.getId());
+		model.addAttribute("followedCount", followedCount);
 		return "account/posts/index";
 	}
 	

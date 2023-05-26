@@ -14,6 +14,12 @@ public interface RelationshipRepository extends JpaRepository<Relationship, Inte
 	boolean existsByFollowerIdAndFollowedId(String myId, String followId);
 	void deleteByFollowerIdAndFollowedId(String myId, String followId);
 	
+	// フォローカウント
+	Integer countByFollowerId(String myId);
+	
+	// フォロワーカウント
+	Integer countByFollowedId(String myId);
+	
 	// フォローされているカウント(一覧)
 	@Query(value = "SELECT followed_id, count(*) FROM relationships GROUP BY followed_id", nativeQuery = true)
 	public List<Object[]> getFollowedCount();
