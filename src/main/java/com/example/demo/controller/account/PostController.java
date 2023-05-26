@@ -90,6 +90,7 @@ public class PostController {
 		model.addAttribute("post", post);
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
+		model.addAttribute("myFollow", relationshipRepository.findMyFollow(sessionAccount.getId()));
 		return "account/posts/show";
 	}
 	

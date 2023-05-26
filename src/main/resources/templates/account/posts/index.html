@@ -14,7 +14,7 @@
 					<span th:unless="${@sessionAccount == null || @sessionAccount.getName() == null || @sessionAccount.getName().length() == 0}">
 					<table>
 						<tr>
-							<th><img th:src="${@sessionAccount.getName()}" onerror="this.src='/images/no_image.png'" width="100px" height="100px"></th>
+							<th><img th:src="${@sessionAccount.getName()} + '.png'" onerror="this.src='/images/no_image.png'" width="100px" height="100px"></th>
 						</tr>
 						<tr>
 							<th>ユーザー名</th>
@@ -53,17 +53,18 @@
 								<a th:href="'javascript:follow' + ${post.id} + '.submit()'">フォローする</a>
 								<form th:action="'/accounts/' + ${post.userId} + '/follow'" method="post" th:name="'follow' + ${post.id}"></form>
 							</th:block>
-						</th:block>
-						<!-- いいね -->
-						<th:block th:if="${myFavorites.contains(post.Id) == true}">
-							<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="fas fa-heart"></i></a>
-							[[${favoriteCount.get(post.Id)}]]
-							<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
-						</th:block>
-						<th:block th:unless="${myFavorites.contains(post.Id) == true}">
-							<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="far fa-heart"></i></a>
-							[[${favoriteCount.get(post.Id)}]]
-							<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
+						
+							<!-- いいね -->
+							<th:block th:if="${myFavorites.contains(post.Id) == true}">
+								<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="fas fa-heart"></i></a>
+								[[${favoriteCount.get(post.Id)}]]
+								<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
+							</th:block>
+							<th:block th:unless="${myFavorites.contains(post.Id) == true}">
+								<a th:href="'javascript:favorite' + ${post.Id} + '.submit()'"><i class="far fa-heart"></i></a>
+								[[${favoriteCount.get(post.Id)}]]
+								<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" th:name="'favorite' + ${post.Id}"></form>
+							</th:block>
 						</th:block>
 						<hr>
 					</div>
