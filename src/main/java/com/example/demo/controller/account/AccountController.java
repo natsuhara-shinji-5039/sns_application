@@ -88,6 +88,8 @@ public class AccountController {
 			accountRepository.save(account);
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
+			
+			
 			return "redirect:/my_page";
 		}
 	}
@@ -97,6 +99,7 @@ public class AccountController {
 	public String index() {
 		return "account/login";
 	}
+	
 	
 	// ログイン処理
 	@PostMapping("/account/sign_in")

@@ -9,22 +9,36 @@
 <body>
 	<div layout:fragment="content">
 		<h1>投稿詳細ページ</h1>
+		<img th:src="'/' + ${post.userId} + '.png'" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
 		<p th:text="${post.name}"></p>
 		<p th:text="${post.body}"></p>
 		<a th:href="'/posts/' + ${post.id}">[[${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}]]</a>
 		
-		<th:block th:if="${myFavorites.contains(post.Id) == true}">
-			<a href="javascript:favorite.submit()"><i class="fas fa-heart"></i></a>
-			[[${favoriteCount}]]
-			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
-		</th:block>
-		<th:block th:unless="${myFavorites.contains(post.Id) == true}">
-			<a href="javascript:favorite.submit()"><i class="far fa-heart"></i></a>
-			[[${favoriteCount}]]
-			<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
+		<!-- フォロー -->
+		<th:block th:unless="${post.userId == @sessionAccount.getId()}">
+			<th:block th:if="${myFollow.contains(post.userId) == true}">
+				<a th:href="'javascript:follow' + ${post.id} + '.submit()'">フォロー解除</a>
+				<form th:action="'/accounts/' + ${post.userId} + '/follow'" method="post" th:name="'follow' + ${post.id}"></form>
+			</th:block>
+							
+			<th:block th:unless="${myFollow.contains(post.userId) == true}">
+				<a th:href="'javascript:follow' + ${post.id} + '.submit()'">フォローする</a>
+				<form th:action="'/accounts/' + ${post.userId} + '/follow'" method="post" th:name="'follow' + ${post.id}"></form>
+			</th:block>
+		
+			<th:block th:if="${myFavorites.contains(post.Id) == true}">
+				<a href="javascript:favorite.submit()"><i class="fas fa-heart"></i></a>
+				[[${favoriteCount.get(post.Id)}]]
+				<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
+			</th:block>
+			<th:block th:unless="${myFavorites.contains(post.Id) == true}">
+				<a href="javascript:favorite.submit()"><i class="far fa-heart"></i></a>
+				[[${favoriteCount.get(post.Id)}]]
+				<form th:action="'/posts/' + ${post.id} + '/favorites'" method="post" name="favorite"></form>
+			</th:block>
 		</th:block>
 		
-		<form th:action="'/posts/' + ${post.id} + '/delete'" method="post" th:if="${@sessionAccount.id == post.userId}">
+		<form th:action="'/posts/' + ${post.id} + '/delete'" method="post">
 			<button class="btn btn-danger">削除</button>
 		</form>
 	</div>
