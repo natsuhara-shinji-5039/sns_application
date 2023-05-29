@@ -83,6 +83,7 @@ CREATE TABLE reset_passwords
    id VARCHAR PRIMARY KEY,
    user_id VARCHAR,
    created_at TIMESTAMP NOT NULL
+);
 
 -- フォロー・フォロワーテーブル
 CREATE TABLE relationships
