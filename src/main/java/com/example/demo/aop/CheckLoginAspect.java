@@ -26,7 +26,13 @@ public class CheckLoginAspect {
 				&& (sig.getName().equals("index") 
 						|| sig.getName().equals("signUp")
 						|| sig.getName().equals("login")
-						|| sig.getName().equals("store"))) {
+						|| sig.getName().equals("store")
+						|| sig.getName().equals("confirm")
+						|| sig.getName().equals("confirmMail")
+						|| sig.getName().equals("confirmResult")
+						|| sig.getName().equals("resetPassword")
+						|| sig.getName().equals("result")
+						|| sig.getName().equals("result"))) {
 			return jp.proceed();
 		}
 		

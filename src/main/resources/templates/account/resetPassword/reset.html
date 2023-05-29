@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<ul th:each="error: ${errors}">
+			<li th:text="${error}"></li>
+		</ul>
+		<form action="/reset_password/result" method="post">
+			<input type="hidden" th:value="${userId}" name="user_id">
+			<table>
+				<tr>
+					<th>パスワード</th>
+					<td><input type="text" name="password"></td>
+				</tr>
+				<tr>
+					<th>確認用パスワード</th>
+					<td><input type="text" name="confirm_password"></td>
+				</tr>
+				<tr>
+					<td><button>送信</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

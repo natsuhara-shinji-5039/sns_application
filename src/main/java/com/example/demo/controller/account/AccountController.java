@@ -7,21 +7,34 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Account;
+import com.example.demo.entity.ResetPassword;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
+import com.example.demo.repository.ResetPasswordRepository;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 
@@ -35,6 +48,18 @@ public class AccountController {
 	
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	ResetPasswordRepository resetPasswordRepository;
+	
+	@Autowired
+	private JavaMailSender sender;
+	
+	@Autowired
+	private MailSender mailSender;
+	
+	// メール改行文字
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	// 新規登録画面
 	@GetMapping("/account/sign_up")
@@ -89,6 +114,16 @@ public class AccountController {
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
 			
+
+			SimpleMailMessage msg = new SimpleMailMessage();
+		    msg.setTo(account.getEmail());// To
+
+		    String insertMessage = "登録完了しました。" + LINE_SEPARATOR;
+		    insertMessage += "Test from Spring Mail" + LINE_SEPARATOR;
+
+		    msg.setSubject("新規登録の完了");// Set Title
+		    msg.setText(insertMessage);// Set Message
+		    mailSender.send(msg);
 			
 			return "redirect:/my_page";
 		}
@@ -115,11 +150,13 @@ public class AccountController {
 			errors.add("ユーザーIDを入力してください");
 		} else if(account.size() == 0) {
 			errors.add("アカウントが存在しません");
+		} else if(!account.get(0).getPassword().equals(password)) {
+			errors.add("パスワードが間違っています");
 		}
 		
 		if(password.equals("")) {
 			errors.add("パスワードを入力してください");
-		}
+		} 
 		
 		if(errors.size() > 0) {
 			model.addAttribute("errors", errors);
@@ -166,7 +203,7 @@ public class AccountController {
 			@RequestParam(name = "profile_image", defaultValue="") MultipartFile profileImage,
 			Model model) throws IOException {
 		Account account = accountRepository.findById(id).get(0);
-		
+//		一意な画像ファイル名の作成
 //		String originalFileName= profileImage.getOriginalFilename();
 //		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 //		UUID uuid = UUID.randomUUID();
@@ -187,6 +224,140 @@ public class AccountController {
 		sessionAccount.setName(account.getName());
 		sessionAccount.setId(account.getId());
 		return "redirect:/my_page";
+	}
+	
+	// パスワードリセットメール確認画面
+	@GetMapping("/account/reset_password") 
+	public String confirm(){
+		return "account/resetPassword/setting";
+	}
+	
+	@PostMapping("/account/confirm/mail")
+	public String confirmMail(
+			@RequestParam(name = "email", defaultValue = "") String email,
+			@RequestParam(name = "confirm_email", defaultValue = "") String confirmEmail,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) throws MessagingException {
+		// エラーチェック
+		System.out.println("test1");
+		List<String> errors = new ArrayList<>();
+		if(email.equals("")) {
+			System.out.println("test2");
+			errors.add("メールアドレスを入力してください");
+		}
+		if(confirmEmail.equals("")) {
+			System.out.println("test3");
+			errors.add("確認用メールアドレスを入力して下さい");
+		}
+		if(errors.size() == 0 && !email.equals(confirmEmail)) {
+			System.out.println("test4");
+			errors.add("メールアドレスが一致しません");
+		}
+		System.out.println("test5");
+		List<Account> account = accountRepository.findByEmail(email);
+		if(errors.size() == 0 && account.size() == 0) {
+			System.out.println("test6");
+			errors.add("お使いのメールアドレスのアカウントが存在しません");
+		}
+		
+		if(errors.size() != 0) {
+			System.out.println("test7");
+			model.addAttribute("errors", errors);
+			return "account/resetPassword/setting";
+		} else {
+			UUID uuid = UUID.randomUUID();
+			System.out.println(account.get(0).getId());
+			ResetPassword resetPassword = new ResetPassword(uuid.toString(), account.get(0).getId());
+			resetPasswordRepository.save(resetPassword);
+			
+			
+			// urlの作成
+			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/reset_password/" + uuid.toString();
+			
+//			SimpleMailMessage msg = new SimpleMailMessage();
+//		    msg.setTo(email);
+		    
+		    String insertMessage = "<html>"
+	          + "<head></head>"
+	          + "<body>"
+	          + "<p>以下のurlからパスワードの再設定を行ってください。</p>"
+	          + "<p><a href='" + url + "'> " +  url +"</a></p>"
+	          + "<p>また、パスワード再設定の有効時間は30分です。</p>"
+	          + "</body>"
+	          + "</html>";
+		    MimeMessage message = sender.createMimeMessage();
+		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		    helper.setText("本文", insertMessage);
+		    helper.setSubject("パスワードの再設定");
+			helper.setTo(email);
+		    
+		    sender.send(message);
+
+//		    String insertMessage = "以下のurlからパスワードの再設定を行ってください。" + LINE_SEPARATOR;
+//		    insertMessage += url + LINE_SEPARATOR;
+//		    insertMessage += "また、パスワード再設定の有効時間は30分です。" + LINE_SEPARATOR;
+
+//		    msg.setSubject("パスワードの再設定");// Set Title
+//		    msg.setText(insertMessage);// Set Message
+//		    mailSender.send(msg);
+			
+			return "redirect:/account/confirm";
+		}
+	}
+	
+	@GetMapping("/account/confirm")
+	public String confirmResult() {
+		return "account/resetPassword/confirm";
+	}
+	
+	@GetMapping("/reset_password/{id}")
+	public String resetPassword(
+			@PathVariable("id") String id,
+			Model model) {
+		List<ResetPassword> resetPassword = resetPasswordRepository.findById(id);
+//		List<String> errors = null;
+		System.out.println("ここから");
+		System.out.println(resetPassword.get(0).getUserId());
+		if(resetPassword.size() == 0) {
+			model.addAttribute("result", "有効なURLではありません。");
+			return "account/resetPassword/error";
+		}
+		
+		LocalDateTime referTime = resetPassword.get(0).getCreatedAt();
+		if(LocalDateTime.now().isAfter(referTime.plusMinutes(1))) {
+			model.addAttribute("result", "有効なURLではありません。");
+			return "account/resetPassword/error";
+		}
+		model.addAttribute("userId", resetPassword.get(0).getUserId());
+		return "account/resetPassword/reset";
+	}
+	
+	@PostMapping("/reset_password/result")
+	public String result(
+			@RequestParam(name = "user_id", defaultValue = "") String userId,
+			@RequestParam(name = "password", defaultValue = "") String password,
+			@RequestParam(name = "confirm_password", defaultValue = "") String confirmPassword,
+			Model model) {
+		List<String> errors = new ArrayList<>();
+		if(password.equals("") || confirmPassword.equals("")) {
+			errors.add("再設定するパスワードを入力してください");
+		}
+		System.out.println(userId);
+		System.out.println(password);
+		System.out.println(confirmPassword);
+		if(!password.equals(confirmPassword)) {
+			errors.add("パスワードが一致しておりません");
+		}
+		
+		if(errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "account/resetPassword/reset";
+		}
+		
+		List<Account> account = accountRepository.findById(userId);
+		account.get(0).setPassword(password);
+		accountRepository.save(account.get(0));
+		return "account/resetPassword/result";
 	}
 
 	@GetMapping("/")

@@ -45,6 +45,11 @@ public class Account {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
+	public Account(String id, String password) {
+		this.id = id;
+		this.password = password;
+	}
+	
 	// ゲッター
 	public String getId() {
 		return id;

@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS reset_passwords;
 CREATE TABLE accounts
 (
    id VARCHAR PRIMARY KEY,
+   reset_id VARCHAR,
    name VARCHAR,
    email VARCHAR,
    introduction TEXT,
@@ -75,6 +76,13 @@ CREATE TABLE favorites
    created_at TIMESTAMP NOT NULL,
    updated_at TIMESTAMP NOT NULL
 );
+
+-- パスワードリセットテーブル
+CREATE TABLE reset_passwords
+(
+   id VARCHAR PRIMARY KEY,
+   user_id VARCHAR,
+   created_at TIMESTAMP NOT NULL
 
 -- フォロー・フォロワーテーブル
 CREATE TABLE relationships
