@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,13 +20,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Account;
+import com.example.demo.entity.ResetPassword;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.AccountRepository;
+import com.example.demo.repository.ResetPasswordRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -44,6 +48,9 @@ public class AccountController {
 	
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	ResetPasswordRepository resetPasswordRepository;
 	
 	@Autowired
 	private JavaMailSender sender;
@@ -142,11 +149,13 @@ public class AccountController {
 			errors.add("ユーザーIDを入力してください");
 		} else if(account.size() == 0) {
 			errors.add("アカウントが存在しません");
+		} else if(!account.get(0).getPassword().equals(password)) {
+			errors.add("パスワードが間違っています");
 		}
 		
 		if(password.equals("")) {
 			errors.add("パスワードを入力してください");
-		}
+		} 
 		
 		if(errors.size() > 0) {
 			model.addAttribute("errors", errors);
@@ -256,10 +265,10 @@ public class AccountController {
 			return "account/resetPassword/setting";
 		} else {
 			UUID uuid = UUID.randomUUID();
+			System.out.println(account.get(0).getId());
+			ResetPassword resetPassword = new ResetPassword(uuid.toString(), account.get(0).getId());
+			resetPasswordRepository.save(resetPassword);
 			
-//			while() {
-//				
-//			};
 			
 			// urlの作成
 			String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/reset_password/" + uuid.toString();
@@ -301,8 +310,52 @@ public class AccountController {
 	}
 	
 	@GetMapping("/reset_password/{id}")
-	public String resetPassword(Model model) {
+	public String resetPassword(
+			@PathVariable("id") String id,
+			Model model) {
+		List<ResetPassword> resetPassword = resetPasswordRepository.findById(id);
+//		List<String> errors = null;
+		System.out.println("ここから");
+		System.out.println(resetPassword.get(0).getUserId());
+		if(resetPassword.size() == 0) {
+			model.addAttribute("result", "有効なURLではありません。");
+			return "account/resetPassword/error";
+		}
 		
+		LocalDateTime referTime = resetPassword.get(0).getCreatedAt();
+		if(LocalDateTime.now().isAfter(referTime.plusMinutes(1))) {
+			model.addAttribute("result", "有効なURLではありません。");
+			return "account/resetPassword/error";
+		}
+		model.addAttribute("userId", resetPassword.get(0).getUserId());
+		return "account/resetPassword/reset";
+	}
+	
+	@PostMapping("/reset_password/result")
+	public String result(
+			@RequestParam(name = "user_id", defaultValue = "") String userId,
+			@RequestParam(name = "password", defaultValue = "") String password,
+			@RequestParam(name = "confirm_password", defaultValue = "") String confirmPassword,
+			Model model) {
+		List<String> errors = new ArrayList<>();
+		if(password.equals("") || confirmPassword.equals("")) {
+			errors.add("再設定するパスワードを入力してください");
+		}
+		System.out.println(userId);
+		System.out.println(password);
+		System.out.println(confirmPassword);
+		if(!password.equals(confirmPassword)) {
+			errors.add("パスワードが一致しておりません");
+		}
+		
+		if(errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "account/resetPassword/reset";
+		}
+		
+		List<Account> account = accountRepository.findById(userId);
+		account.get(0).setPassword(password);
+		accountRepository.save(account.get(0));
 		return "account/resetPassword/result";
 	}
 

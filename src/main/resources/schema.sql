@@ -81,6 +81,5 @@ CREATE TABLE reset_passwords
 (
    id VARCHAR PRIMARY KEY,
    user_id VARCHAR,
-   email VARCHAR,
    created_at TIMESTAMP NOT NULL
 );

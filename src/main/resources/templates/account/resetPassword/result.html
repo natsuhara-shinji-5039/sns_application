@@ -5,6 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>テスト</h1>
+	<div layout:fragment="content">
+	  <h1 th:text="${result}">パスワードを再設定しました</h1>
+	  <a href="/account/sign_in">ログインページ</a>
+	</div>
 </body>
 </html>
