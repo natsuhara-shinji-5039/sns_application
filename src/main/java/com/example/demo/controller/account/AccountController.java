@@ -114,6 +114,7 @@ public class AccountController {
 			sessionAccount.setName(account.getName());
 			sessionAccount.setId(account.getId());
 			
+
 			SimpleMailMessage msg = new SimpleMailMessage();
 		    msg.setTo(account.getEmail());// To
 

@@ -13,7 +13,11 @@ import com.example.demo.entity.Favorite;
 public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 	boolean existsByUserIdAndPostId(String userId, Integer PostId);
 	void deleteByUserIdAndPostId(String userId, Integer postId);
+
+	// いいねカウント
+	Integer countByPostId(Integer postId);
 	
+	// 全体のいいねカウント
 	@Query(value = "SELECT post_id, count(*) FROM favorites GROUP BY post_id", nativeQuery = true)
 	public List<Object[]> getFavoriteCount();
 	
@@ -28,7 +32,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 		return map;
 	}
 	
-	
+	// 自分がいいねしたもの
 	@Query(value = "SELECT post_id FROM favorites WHERE user_id = :userid", nativeQuery = true)
 	public Object[] getMyFavorites(String userid);
 	

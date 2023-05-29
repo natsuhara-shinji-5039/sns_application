@@ -16,6 +16,7 @@ import com.example.demo.entity.VPost;
 import com.example.demo.model.SessionAccount;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.PostRepository;
+import com.example.demo.repository.RelationshipRepository;
 import com.example.demo.repository.VPostRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +39,9 @@ public class PostController {
 	@Autowired
 	FavoriteRepository favoriteRepository;
 	
+	@Autowired
+	RelationshipRepository relationshipRepository;
+	
 	// 新規登録ページ
 	@GetMapping("/posts/new")
 	public String create() {
@@ -57,11 +61,22 @@ public class PostController {
 	// 一覧ページ
 	@GetMapping("/posts")
 	public String index(Model model) {
-		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		List<VPost> posts = vPostRepository.findAllByOrderByIdDesc();
 		model.addAttribute("posts", posts);
+		// いいね
+		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
+		// フォロー
+//		Map<String, Long> followedCount = relationshipRepository.findFollowedCount();
+//		model.addAttribute("folloewerCount", followedCount);
+		model.addAttribute("myFollow", relationshipRepository.findMyFollow(sessionAccount.getId()));
+		// ユーザーフォロー数
+		Integer followerCount = relationshipRepository.countByFollowerId(sessionAccount.getId());
+		model.addAttribute("followerCount", followerCount);
+		// ユーザーフォロワー数
+		Integer followedCount = relationshipRepository.countByFollowedId(sessionAccount.getId());
+		model.addAttribute("followedCount", followedCount);
 		return "account/posts/index";
 	}
 	
@@ -71,10 +86,11 @@ public class PostController {
 			@PathVariable("id") Integer id,
 			Model model) {
 		VPost post = vPostRepository.findById(id).get();
-		Map<Integer, Long> favoriteCount = favoriteRepository.findFavoriteCount();
+		Integer favoriteCount = favoriteRepository.countByPostId(id);
 		model.addAttribute("post", post);
 		model.addAttribute("favoriteCount", favoriteCount);
 		model.addAttribute("myFavorites", favoriteRepository.findMyFavorites(sessionAccount.getId()));
+		model.addAttribute("myFollow", relationshipRepository.findMyFollow(sessionAccount.getId()));
 		return "account/posts/show";
 	}
 	
