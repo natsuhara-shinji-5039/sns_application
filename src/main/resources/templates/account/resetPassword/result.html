@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-8 offset-md-1">
 	  <h1 th:text="${result}">パスワードを再設定しました</h1>
 	  <a href="/account/sign_in">ログインページ</a>
+	</div>
+	</div>
+		</div>
 	</div>
 </body>
 </html>

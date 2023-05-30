@@ -8,6 +8,10 @@
 </head>
 <body>
 	<div layout:fragment="content">
+		<div class="container">
+		<div class="row">
+		<div class="col-md-3"></div>
+		<div class="col-md-8 offset-md-1">
 		<h1>投稿詳細ページ</h1>
 		<img th:src="'/' + ${post.userId} + '.png'" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
 		<p th:text="${post.name}"></p>
@@ -42,6 +46,9 @@
 		<form th:if="${@sessionAccount != null}" th:action="'/posts/' + ${post.id} + '/delete'" method="post">
 			<button class="btn btn-danger">削除</button>
 		</form>
+		</div>
+		</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -10,16 +10,20 @@
 	<div layout:fragment="content">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-3">
-					<h1>test</h1>
-				</div>
+				<div class="col-md-3"></div>
 				<div class="col-md-8 offset-md-1">
 					<table>
 						<tr>
 							<img th:src="${imagePath}" onerror="this.src='/images/no_image.png'" width="100px" height="100px">
 						</tr>
 						<tr>
-							<td><a href="/my_page/edit">プロフィール編集</a></td>
+							<td><p></p></td>
+						</tr>
+						<tr>
+							<td><a href="/my_page/edit" class="btn btn-success">プロフィール編集</a></td>
+						</tr>
+						<tr>
+							<td><p></p></td>
 						</tr>
 						<tr>
 							<th>名前</th>
