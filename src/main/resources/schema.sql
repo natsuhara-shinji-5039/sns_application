@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS reset_passwords;
 CREATE TABLE accounts
 (
    id VARCHAR PRIMARY KEY,
-   reset_id VARCHAR,
    name VARCHAR,
    email VARCHAR,
    introduction TEXT,
