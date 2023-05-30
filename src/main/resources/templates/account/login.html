@@ -4,6 +4,7 @@
 	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8" th:remove="tag">
+<link th:href="@{/css/error.css}" rel="stylesheet" type="text/css">
 <title>Login</title>
 </head>
 <body>
@@ -13,7 +14,7 @@
 				<div class="col-3"></div>
 				<div class="mx-auto col-6">
 					<h1>LogIn</h1>
-					<ul th:each="error: ${errors}">
+					<ul class="error" th:each="error: ${errors}">
 						<li th:text="${error}"></li>
 					</ul>
 					<form action="/account/sign_in" method="post">
