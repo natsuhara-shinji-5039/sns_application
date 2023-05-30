@@ -43,7 +43,7 @@
 			</th:block>
 		</th:block>
 		
-		<form th:if="${@sessionAccount != null}" th:action="'/posts/' + ${post.id} + '/delete'" method="post">
+		<form th:if="${@sessionAccount != null && @sessionAccount.getId() == post.userId}" th:action="'/posts/' + ${post.id} + '/delete'" method="post">
 			<button class="btn btn-danger">削除</button>
 		</form>
 		</div>
