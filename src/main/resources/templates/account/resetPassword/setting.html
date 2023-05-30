@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<div layout:fragment="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-8 offset-md-1">
 		<ul th:each="error: ${errors}">
 			<li th:text="${error}"></li>
 		</ul>
@@ -13,17 +19,20 @@
 			<table>
 				<tr>
 					<th>メールアドレス</th>
-					<td><input type="email" name="email"></td>
+					<td><input type="email" class="form-control"  name="email"></td>
 				</tr>
 				<tr>
 					<th>確認用メールアドレス</th>
-					<td><input type="email" name="confirm_email"></td>
+					<td><input type="email" class="form-control" name="confirm_email"></td>
 				</tr>
 				<tr>
-					<td><button>送信</button></td>
+					<td><button class="btn btn-primary">送信</button></td>
 				</tr>
 			</table>
 		</form>
+		</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -10,49 +10,50 @@
 	<div layout:fragment="content">
 		<div class="container">
 			<div class="row">
-				<div>
+				<div class="col-md-3"></div>
+				<div class="col-md-8 offset-md-1">
 					<form action="/my_page/edit" method="post" enctype="multipart/form-data">
 						<table>
 							<tr>
 								<th>プロフィール画像</th>
-								<td><input type="file" name="profile_image" accept=".png"></td>
+								<td><input type="file" class="form-control" name="profile_image" accept=".png"></td>
 							</tr>
 							<tr>
 							  <th>ユーザーID</th>
 							  <td>
-							    <input type="text" name="id" th:value="${account.id}" placeholder="ユーザーID">
+							    <input type="text" class="form-control" name="id" th:value="${account.id}" placeholder="ユーザーID">
 							  </td>
 							</tr>
 							<tr>
 							  <th>ユーザー名</th>
 							  <td>
-							    <input type="text" name="name" th:value="${account.name}" placeholder="ユーザー名">
+							    <input type="text" class="form-control" name="name" th:value="${account.name}" placeholder="ユーザー名">
 							  </td>
 							</tr>
 							<tr>
 								<th>メールアドレス</th>
-								<td><input type="text" name="email" th:value="${account.email}" placeholder="メールアドレス"></td>
+								<td><input type="text" size="35" class="form-control" name="email" th:value="${account.email}" placeholder="メールアドレス"></td>
 							</tr>
 							<tr>
 							  <th>パスワード</th>
 							  <td>
-							    <input type="text" name="password" th:value="${account.password}" placeholder="パスワード">
+							    <input type="text" class="form-control" name="password" th:value="${account.password}" placeholder="パスワード">
 							  </td>
 							</tr>
 							<tr>
 							  <th>生年月日</th>
 							  <td>
-							    <input type="date" name="birthday" th:value="${account.birthday}">
+							    <input type="date" class="form-control" name="birthday" th:value="${account.birthday}">
 							  </td>
 							</tr>
 							<tr>
 							  <th>自己紹介文</th>
 							  <td>
-							    <textarea name="introduction" placeholder="自己紹介文">[[${account.introduction}]]</textarea> 
+							    <textarea name="introduction" class="form-control" placeholder="自己紹介文">[[${account.introduction}]]</textarea> 
 							  </td>
 							</tr>
 						</table>
-						<button>登録</button>
+						<button class="btn btn-primary">登録</button>
 					</form>
 				</div>
 			</div>

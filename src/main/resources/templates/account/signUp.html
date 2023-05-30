@@ -4,55 +4,59 @@
 	layout:decorate="~{layouts/template}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>新規登録</title>
+<link th:href="@{/css/signUp.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div layout:fragment="content">
-		<ul th:each="error: ${errors}">
-			<li th:text="${error}"></li>
-		</ul>
-		<h1>新規登録</h1>
-		<form action="/account/sign_up" method="post">
-			<table>
-				<tr>
-					<th>ユーザーID</th>
-					<td>
-						<input type="text" name="id" placeholder="ユーザーID">
-					</td>
-				</tr>
-				<tr>
-					<th>ユーザー名</th>
-					<td>
-						<input type="text" name="name" placeholder="ユーザー名">
-					</td>
-				</tr>
-				<tr>
-					<th>メールアドレス</th>
-					<td>
-						<input type="text" name="email" placeholder="メールアドレス">
-					</td>
-				</tr>
-				<tr>
-					<th>パスワード</th>
-					<td>
-						<input type="text" name="password" placeholder="パスワード">
-					</td>
-				</tr>
-				<tr>
-					<th>生年月日</th>
-					<td>
-						<input type="date" name="birthday">
-					</td>
-				</tr>
-				<tr>
-					<th>自己紹介文</th>
-					<td>
-						<textarea name="introduction" placeholder="自己紹介文"></textarea> 
-					</td>
-				</tr>
-			</table>
-			<button>登録</button>
-		</form>
+		<div class="col-3"></div>
+		<div class="mx-auto col-6">
+			<ul th:each="error: ${errors}">
+				<li th:text="${error}"></li>
+			</ul>
+			<h1>新規登録</h1>
+			<form action="/account/sign_up" method="post">
+				<table>
+					<tr>
+						<th>ユーザーID</th>
+						<td>
+							<input type="text" class="form-control" name="id" placeholder="ユーザーID" size="20">
+						</td>
+					</tr>
+					<tr>
+						<th>ユーザー名</th>
+						<td>
+							<input type="text" class="form-control" name="name" placeholder="ユーザー名" size="20">
+						</td>
+					</tr>
+					<tr>
+						<th>メールアドレス</th>
+						<td>
+							<input type="text" class="form-control" name="email" placeholder="メールアドレス" size="35">
+						</td>
+					</tr>
+					<tr>
+						<th>パスワード</th>
+						<td>
+							<input type="text" class="form-control" name="password" placeholder="パスワード">
+						</td>
+					</tr>
+					<tr>
+						<th>生年月日</th>
+						<td>
+							<input type="date" class="form-control" name="birthday">
+						</td>
+					</tr>
+					<tr>
+						<th>自己紹介文</th>
+						<td>
+							<textarea name="introduction" class="form-control" placeholder="自己紹介文"></textarea> 
+						</td>
+					</tr>
+				</table>
+				<button class="btn btn-success">登録</button>
+			</form>
+		</div>
 	</div>
 </body>
 </html>
